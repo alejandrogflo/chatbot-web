@@ -4,7 +4,32 @@ Aplicación Python con PostgreSQL y un flujo LangGraph para contestar preguntas 
 
 ## Desarrollo con SDD
 
-El trabajo se organiza como especificación → plan → tareas → implementación. Consulta [specs/README.md](specs/README.md) para el flujo y [specs/02-roadmap.md](specs/02-roadmap.md) para el estado. `pf.md` conserva el enunciado original; las specs convierten sus requisitos en incrementos implementables. El primer incremento web en curso es [F-001: aplicación web y autenticación](specs/features/001-authentication/spec.md).
+El trabajo se organiza como especificación → plan → tareas → implementación. Consulta [specs/README.md](specs/README.md) para el flujo y [specs/02-roadmap.md](specs/02-roadmap.md) para el estado. `pf.md` conserva el enunciado original; las specs convierten sus requisitos en incrementos implementables. El primer incremento web en curso es [F-001: aplicación web y autenticación](specs/features/001-authentication/spec.md). El flujo de Git está resumido abajo y las reglas completas están en [AGENTS.md](AGENTS.md).
+
+## Flujo de Git y GitHub
+
+`main` conserva la versión estable. Para un incremento funcional, crea una rama desde `main` actualizada y trabaja allí. Una rama separa los cambios del incremento; un worktree crea otro checkout físico y solo hace falta si se trabajará en dos ramas al mismo tiempo. Las reglas detalladas están en [AGENTS.md](AGENTS.md).
+
+```bash
+git switch main
+git pull --ff-only
+git switch -c codex/usuarios-crud
+```
+
+Antes de confirmar, revisa los cambios y agrega solo los archivos relacionados. Los commits guardan una versión local; `git push` la publica en GitHub.
+
+```bash
+git status --short
+git diff
+git add <rutas-de-los-archivos-relacionados>
+git diff --cached
+git commit -m "característica(usuarios): agregar CRUD administrativo"
+git push -u origin codex/usuarios-crud
+```
+
+En `git add`, reemplaza el marcador por las rutas reales de los archivos que cambiaste; no copies los signos `< >`.
+
+Escribe los mensajes de commit en español y no agregues `.env`, claves, contraseñas ni datos locales de PostgreSQL. Después de integrar una rama, actualiza `main` con `git pull --ff-only`.
 
 ## Requisitos locales
 
