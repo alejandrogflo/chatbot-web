@@ -1,0 +1,57 @@
+:root { color-scheme: light; --ink: #172421; --muted: #71807c; --green: #17745f; --green-dark: #0f5c4b; --mint: #e9f3ee; --line: #e5ece8; --paper: #f7f9f7; --white: #fff; --shadow: 0 18px 50px rgba(31, 69, 58, .08); }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); font-family: Inter, 'Avenir Next', 'Segoe UI', sans-serif; }
+h1, h2, p { margin-top: 0; }
+h1, h2, .wordmark { font-family: 'Avenir Next', Inter, 'Segoe UI', sans-serif; }
+.page-shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+.login-layout { min-height: 100vh; display: grid; grid-template-columns: 1.02fr .98fr; align-items: center; gap: clamp(44px, 9vw, 120px); padding: 64px 0; }
+.intro-panel { padding: 28px 0; }
+.eyebrow { color: var(--green); font-size: .72rem; letter-spacing: .16em; font-weight: 700; margin-bottom: 18px; }
+.intro-panel h1 { max-width: 570px; font-size: clamp(2.7rem, 5.3vw, 4.9rem); letter-spacing: -.065em; line-height: 1.06; margin-bottom: 24px; }
+.intro-copy { max-width: 430px; color: var(--muted); font-size: 1.1rem; line-height: 1.75; }
+.catalog-tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 38px; }
+.catalog-tags span { border: 1px solid #d9e8df; color: #48685d; background: rgba(255,255,255,.68); padding: 9px 14px; border-radius: 999px; font-size: .82rem; }
+.form-panel { background: var(--white); border: 1px solid rgba(214,229,220,.9); border-radius: 22px; padding: clamp(30px, 5vw, 52px); box-shadow: var(--shadow); }
+.form-panel h2 { font-size: 2rem; letter-spacing: -.045em; margin-bottom: 8px; }
+.muted { color: var(--muted); line-height: 1.65; }
+.stack { display: flex; flex-direction: column; margin-top: 32px; }
+label { color: #41544e; font-size: .86rem; font-weight: 600; margin-bottom: 8px; }
+input[type=email], input[type=password] { width: 100%; height: 49px; border: 1px solid #dce6e0; border-radius: 9px; background: #fcfdfc; padding: 0 14px; font: inherit; color: var(--ink); outline: none; transition: border .15s, box-shadow .15s; }
+input:focus { border-color: #61a38e; box-shadow: 0 0 0 3px rgba(23,116,95,.11); }
+input[type=password] { margin-bottom: 23px; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-height: 42px; border: 0; border-radius: 8px; padding: 0 16px; color: inherit; background: transparent; font: 600 .9rem Inter, 'Avenir Next', 'Segoe UI', sans-serif; text-decoration: none; cursor: pointer; }
+.button--primary { background: var(--green); color: var(--white); min-height: 50px; justify-content: space-between; padding: 0 18px; }
+.button--primary:hover { background: var(--green-dark); }
+.button--quiet { color: #53645e; border: 1px solid var(--line); background: #fff; }
+.button--quiet:hover { border-color: #aac8b9; color: var(--green-dark); }
+.form-footnote { border-top: 1px solid var(--line); padding-top: 20px; margin: 24px 0 0; color: #87938f; font-size: .78rem; }
+.notices { padding-top: 18px; }
+.notice { padding: 12px 15px; border-radius: 9px; margin: 0 0 8px; font-size: .9rem; }
+.notice--error { color: #9b362c; background: #fff0ed; }
+.notice--success { color: #24634e; background: #eaf6ef; }
+.topbar { min-height: 83px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.wordmark { display: flex; align-items: center; gap: 9px; color: var(--ink); text-decoration: none; font-size: .94rem; font-weight: 700; }
+.brand-mark { width: 29px; height: 29px; display: grid; place-items: center; color: #fff; background: var(--green); border-radius: 9px; font-size: .85rem; }
+.wordmark-light { color: #91a09a; font-weight: 500; }
+.topbar-actions { display: flex; align-items: center; gap: 15px; }
+.topbar-actions form { margin: 0; }
+.user-chip { display: flex; align-items: center; gap: 8px; font-size: .86rem; font-weight: 600; }
+.avatar { width: 29px; height: 29px; display: grid; place-items: center; border-radius: 50%; color: #276450; background: #dceee4; }
+.role-label { border-radius: 999px; padding: 4px 8px; color: #557066; background: #edf3ef; font-size: .7rem; text-transform: capitalize; }
+.welcome-block { padding: clamp(54px, 9vw, 90px) 0 36px; }
+.welcome-block h1 { font-size: clamp(2.25rem, 4vw, 3.6rem); letter-spacing: -.06em; margin-bottom: 12px; }
+.welcome-block .muted { max-width: 620px; margin-bottom: 0; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; padding-bottom: 70px; }
+.feature-card { position: relative; min-height: 246px; padding: 25px 24px; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 25px rgba(31,69,58,.035); }
+.feature-card--active { border-color: #cbded3; }
+.card-number { color: #9baa9f; font-size: .73rem; letter-spacing: .12em; font-weight: 700; }
+.card-icon { display: block; color: var(--green); font-size: 1.45rem; margin: 22px 0 12px; }
+.feature-card h2 { font-size: 1.12rem; letter-spacing: -.03em; margin-bottom: 8px; }
+.feature-card p { min-height: 44px; color: var(--muted); font-size: .88rem; line-height: 1.55; margin-bottom: 17px; }
+.status-pill { display: inline-block; padding: 6px 9px; border-radius: 999px; color: #286b57; background: #eaf5ee; font-size: .72rem; font-weight: 600; }
+.status-pill--muted { color: #798782; background: #f1f4f2; }
+.admin-link { display: inline-flex; gap: 16px; align-items: center; margin: 0 0 25px; padding: 13px 16px; color: #fff; background: var(--green); border-radius: 8px; text-decoration: none; font-size: .88rem; font-weight: 600; }
+.error-card { max-width: 520px; margin: 16vh auto; padding: 44px; background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+.error-card h1 { font-size: 2rem; letter-spacing: -.05em; }
+.error-card .button { margin-top: 12px; }
+@media (max-width: 760px) { .login-layout { grid-template-columns: 1fr; gap: 24px; padding: 42px 0; align-content: center; } .intro-panel { padding: 0; } .intro-panel h1 { font-size: clamp(2.4rem, 12vw, 3.6rem); } .catalog-tags { margin-top: 23px; } .form-panel { padding: 28px 23px; } .topbar { align-items: flex-start; padding: 19px 0; gap: 15px; flex-direction: column; } .topbar-actions { width: 100%; justify-content: space-between; } .feature-grid { grid-template-columns: 1fr; } .feature-card { min-height: 220px; } .welcome-block { padding-top: 54px; } }

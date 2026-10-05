@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ status }} · Seminario Chatbot{% endblock %}
+{% block content %}
+<section class="error-card">
+  <p class="eyebrow">SEMINARIO CHATBOT · {{ status }}</p>
+  <h1>{% if status == 403 %}Acceso restringido{% elif status == 503 %}Servicio no disponible{% else %}Solicitud no válida{% endif %}</h1>
+  <p class="muted">{{ message }}</p>
+  <a class="button button--primary" href="{{ url_for('main.dashboard') }}">Volver</a>
+</section>
+{% endblock %}

@@ -1,0 +1,100 @@
+# Arquitectura y decisiones técnicas
+
+**Estado:** Base técnica acordada; autenticación web implementada inicialmente
+**Actualizado:** 2026-10-04
+
+## Tecnologías
+
+- Python 3.11 o posterior.
+- Flask para la aplicación web.
+- PostgreSQL para persistencia.
+- HTML, CSS y JavaScript sencillo para la interfaz.
+- LangGraph para orquestar el flujo de consulta de IA.
+- LangChain Groq / ChatGroq como integración con el proveedor, con modelo y secreto configurados por entorno.
+- Psycopg para conectar Python con PostgreSQL.
+- Pydantic para validar el plan estructurado de filtros.
+
+DBeaver es una herramienta de inspección y administración manual. La aplicación se conecta directamente a PostgreSQL y no depende de DBeaver.
+
+## Estado técnico comprobado en el repositorio
+
+### Implementado
+
+- Acceso de solo lectura a los catálogos mediante identificadores permitidos y valores SQL parametrizados en `src/seminario_chatbot/database.py`.
+- Modelos Pydantic acotados para categoría y filtros de consulta.
+- Grafo LangGraph con planificación, aclaración, consulta, redacción, evaluación determinista y manejo de errores.
+- Respuesta de respaldo construida desde filas PostgreSQL cuando no se puede redactar o no se supera la comprobación de fundamentación.
+- Configuración por variables de entorno, ejemplos de evaluación del planificador y CLI para explorar el grafo.
+- Migración aditiva `database/001_support_tables.sql`, ya aplicada en el entorno local según `AGENTS.md`.
+- Aplicación Flask inicial con login/logout, sesiones protegidas, autorización administrativa por solicitud, comando de primer administrador y formularios protegidos con CSRF.
+
+### Pendiente
+
+- Revisión en ejecución de los criterios de autenticación y autorización F-001.
+- CRUD web administrativo de usuarios y catálogos.
+- Persistencia web de preguntas, respuestas y consumo.
+- Historial privado y agregación/gráfica de consumo.
+- Instrucciones finales de ejecución y guion de demostración.
+
+## Componentes propuestos
+
+1. **Interfaz Flask:** páginas y formularios en español; muestra solo las acciones permitidas al rol, sin usar la interfaz como único control de acceso.
+2. **Capa de aplicación:** coordina autenticación, administración, chat, historial y consumo. Las rutas delegan en esta capa y no contienen SQL ni lógica del modelo.
+3. **Repositorios PostgreSQL:** consultas parametrizadas para usuarios, catálogos, conversaciones, mensajes y consumo.
+4. **Servicio de chat:** invoca el grafo LangGraph existente con una pregunta nueva por solicitud y persiste la interacción y su consumo.
+5. **Grafo de IA:** convierte lenguaje natural en un plan validado, consulta solo los campos permitidos, redacta usando resultados recuperados y comprueba la fundamentación.
+
+La estructura concreta de módulos puede ajustarse al implementar, conservando esos límites. No añadir capas o dependencias sin una necesidad clara del alcance.
+
+### Organización prevista del paquete
+
+Al iniciar F-001, incorporar la capa web dentro de `src/seminario_chatbot/`: `web/` para la fábrica Flask, blueprints, templates y estáticos; `services/` para coordinar casos de uso cuando las rutas lo requieran; y `repositories/` para el acceso PostgreSQL por dominio. Crear módulos conforme se implementen las funcionalidades, sin carpetas vacías ni una capa genérica anticipada. Mantener `ai/`, `evaluation/` y la CLI como componentes separados.
+
+## Flujo de chat
+
+```text
+Solicitud autenticada
+  -> validar pregunta
+  -> LangGraph extrae y valida categoría/filtros
+  -> backend construye consulta parametrizada
+  -> PostgreSQL devuelve filas limitadas
+  -> modelo redacta a partir de esas filas
+  -> evaluador determinista comprueba títulos
+  -> respaldo desde datos si hace falta
+  -> guardar pregunta, respuesta y consumo
+  -> devolver respuesta e historial
+```
+
+Cada pregunta empieza con estado nuevo y el grafo no usa checkpointer. La aplicación no entrega SQL al modelo ni acepta SQL libre del usuario.
+
+## Persistencia existente
+
+Los catálogos viven en `public.peliculas` y `public.videojuegos`. Sus nombres, columnas y registros no se recrean ni se recargan. Consultar el esquema real antes de asumir columnas nuevas.
+
+La migración existente añade:
+
+- `usuarios`, con correo único sin distinguir mayúsculas/minúsculas y campo `password_hash`.
+- `conversaciones`, vinculadas a usuarios.
+- `mensajes`, con roles usuario/asistente.
+- `consumo_tokens`, vinculado a usuario y conversación, con categoría y conteos académico y del proveedor.
+
+La migración `001` ya se aplicó localmente; los cambios futuros requieren una nueva migración numerada. Para mantener aislado el historial y vincular cada costo a una consulta independiente, la aplicación debe crear una conversación por pregunta, con el mensaje del usuario, el del asistente y el consumo asociado.
+
+## Límites de seguridad
+
+- Credenciales y clave Groq solo desde entorno local; `.env` no se versiona.
+- Contraseñas guardadas como hash seguro.
+- Sesión requerida en servidor para operaciones privadas y autorización del rol en cada operación administrativa.
+- Entradas validadas y consultas parametrizadas.
+- Plan de IA restringido a categorías, campos, operadores y límites permitidos; el backend controla tabla y SQL.
+- Filas y contexto enviados al modelo limitados a lo necesario.
+- Historial y consumo filtrados por el usuario autenticado.
+- Mensajes de error públicos claros, sin secretos ni trazas internas.
+- Las reglas exactas de configuración y preservación del entorno están en [AGENTS.md](../AGENTS.md).
+
+## Decisiones confirmadas durante F-001
+
+- Templates y estáticos viven dentro de `src/seminario_chatbot/web/` para distribuirlos junto al paquete Python.
+- El primer administrador se aprovisiona con `create-admin`, que solicita la contraseña de forma oculta y serializa el alta inicial con un bloqueo advisory de PostgreSQL.
+- La web requiere `SECRET_KEY`; la cookie de sesión es HttpOnly y SameSite=Lax, y puede habilitar Secure mediante `SESSION_COOKIE_SECURE` cuando se use HTTPS.
+- La validación en ejecución de F-001 y los detalles del entorno final de demostración siguen pendientes; las credenciales y URL locales no se copian a código.

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Administración · Seminario Chatbot{% endblock %}
+{% block content %}
+<header class="topbar">
+  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Administración</span></a>
+  <div class="topbar-actions">
+    <a class="button button--quiet" href="{{ url_for('main.dashboard') }}">Volver al inicio</a>
+    <form method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="button button--quiet" type="submit">Cerrar sesión</button></form>
+  </div>
+</header>
+<section class="welcome-block">
+  <p class="eyebrow">ADMINISTRACIÓN</p>
+  <h1>Panel de control</h1>
+  <p class="muted">Hola, {{ user.nombre }}. La gestión de cuentas y catálogos se habilitará en los próximos incrementos.</p>
+</section>
+<section class="feature-grid">
+  <article class="feature-card"><span class="card-number">01</span><span class="card-icon">◎</span><h2>Usuarios</h2><p>Alta, consulta, actualización y baja de cuentas.</p><span class="status-pill status-pill--muted">Próximo módulo</span></article>
+  <article class="feature-card"><span class="card-number">02</span><span class="card-icon">▤</span><h2>Películas</h2><p>Mantenimiento del catálogo proporcionado para el proyecto.</p><span class="status-pill status-pill--muted">Próximo módulo</span></article>
+  <article class="feature-card"><span class="card-number">03</span><span class="card-icon">▣</span><h2>Videojuegos</h2><p>Mantenimiento del catálogo existente de videojuegos.</p><span class="status-pill status-pill--muted">Próximo módulo</span></article>
+</section>
+{% endblock %}

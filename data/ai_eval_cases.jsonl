@@ -1,0 +1,3 @@
+{"question":"¿Cuáles son 3 películas de drama?","expected":{"categoria":"peliculas","genero":"Drama","limite":3}}
+{"question":"¿Cuáles son 2 videojuegos de aventura?","expected":{"categoria":"videojuegos","genero":"Aventura","limite":2}}
+{"question":"¿Qué juegos de disparos tienen una calificación mayor a 8.5?","expected":{"categoria":"videojuegos","genero":"Shooter","calificacion_minima":8.5,"calificacion_minima_inclusiva":false}}
