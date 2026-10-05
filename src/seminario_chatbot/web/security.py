@@ -11,6 +11,9 @@ from seminario_chatbot.database import DatabaseConfigurationError
 from seminario_chatbot.repositories.users import find_user_by_id
 
 
+_MUTATING_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
+
+
 def csrf_token() -> str:
     token = session.get("_csrf_token")
     if token is None:
@@ -24,6 +27,17 @@ def validate_csrf() -> None:
     submitted = request.form.get("csrf_token", "")
     if not expected or not submitted or not hmac.compare_digest(expected, submitted):
         abort(400)
+
+
+def csrf_protected(view):
+    """Valida CSRF en formularios públicos que no requieren inicio de sesión."""
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        if request.method in _MUTATING_METHODS:
+            validate_csrf()
+        return view(*args, **kwargs)
+
+    return wrapped
 
 
 def current_user() -> dict | None:
@@ -54,19 +68,29 @@ def login_required(view):
     @wraps(view)
     def wrapped(*args, **kwargs):
         if current_user() is None:
-            target = request.full_path.rstrip("?")
-            return redirect(url_for("auth.login", next=target))
+            return _login_redirect()
+        if request.method in _MUTATING_METHODS:
+            validate_csrf()
         return view(*args, **kwargs)
 
     return wrapped
 
 
+def _login_redirect():
+    target = request.full_path.rstrip("?")
+    return redirect(url_for("auth.login", next=target))
+
+
 def admin_required(view):
     @wraps(view)
-    @login_required
     def wrapped(*args, **kwargs):
-        if current_user()["rol"] != "admin":
+        user = current_user()
+        if user is None:
+            return _login_redirect()
+        if user["rol"] != "admin":
             abort(403)
+        if request.method in _MUTATING_METHODS:
+            validate_csrf()
         return view(*args, **kwargs)
 
     return wrapped

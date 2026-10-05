@@ -9,7 +9,7 @@ from werkzeug.security import check_password_hash
 from seminario_chatbot.database import DatabaseConfigurationError
 from seminario_chatbot.repositories.users import find_user_by_email
 from seminario_chatbot.validation import normalize_email
-from seminario_chatbot.web.security import current_user
+from seminario_chatbot.web.security import csrf_protected, current_user, login_required
 
 
 auth_bp = Blueprint("auth", __name__)
@@ -31,6 +31,7 @@ def _safe_next(value: str | None) -> str:
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
+@csrf_protected
 def login():
     if current_user() is not None:
         return redirect(url_for("main.dashboard"))
@@ -58,6 +59,7 @@ def login():
 
 
 @auth_bp.post("/logout")
+@login_required
 def logout():
     session.clear()
     flash("Has cerrado sesión.", "success")

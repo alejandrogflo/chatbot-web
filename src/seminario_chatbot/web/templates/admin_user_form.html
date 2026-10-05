@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == 'crear' %}Crear usuario{% else %}Editar usuario{% endif %} · Administración{% endblock %}
+{% block content %}
+<header class="topbar">
+  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Usuarios</span></a>
+  <a class="button button--quiet" href="{{ url_for('admin_users.index') }}">Volver al listado</a>
+</header>
+
+<section class="form-page">
+  <p class="eyebrow">ADMINISTRACIÓN · CUENTAS</p>
+  <h1>{% if mode == 'crear' %}Crear usuario{% else %}Editar usuario{% endif %}</h1>
+  <p class="muted">{% if mode == 'crear' %}Completa los datos para dar acceso al sistema.{% else %}Actualiza los datos de la cuenta. La contraseña es opcional.{% endif %}</p>
+
+  {% if errors %}
+    <div class="form-errors" role="alert">
+      <strong>Revisa estos campos:</strong>
+      <ul>{% for error in errors.values() %}<li>{{ error }}</li>{% endfor %}</ul>
+    </div>
+  {% endif %}
+
+  <form class="form-panel account-form" method="post" action="{% if mode == 'crear' %}{{ url_for('admin_users.create') }}{% else %}{{ url_for('admin_users.edit', user_id=user_id) }}{% endif %}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" name="nombre" type="text" maxlength="120" autocomplete="name" value="{{ values.nombre }}" required aria-invalid="{{ 'true' if errors.get('nombre') else 'false' }}">
+    {% if errors.get('nombre') %}<span class="field-error">{{ errors.nombre }}</span>{% endif %}
+
+    <label for="correo">Correo electrónico</label>
+    <input id="correo" name="correo" type="email" maxlength="254" autocomplete="email" value="{{ values.correo }}" required aria-invalid="{{ 'true' if errors.get('correo') else 'false' }}">
+    {% if errors.get('correo') %}<span class="field-error">{{ errors.correo }}</span>{% endif %}
+
+    <label for="rol">Rol</label>
+    <select id="rol" name="rol" required aria-invalid="{{ 'true' if errors.get('rol') else 'false' }}">
+      <option value="usuario" {% if values.rol == 'usuario' %}selected{% endif %}>Usuario</option>
+      <option value="admin" {% if values.rol == 'admin' %}selected{% endif %}>Administrador</option>
+    </select>
+    {% if errors.get('rol') %}<span class="field-error">{{ errors.rol }}</span>{% endif %}
+
+    <label for="password">{% if mode == 'crear' %}Contraseña{% else %}Nueva contraseña{% endif %}</label>
+    <input id="password" name="password" type="password" autocomplete="new-password" {% if mode == 'crear' %}required{% endif %} aria-invalid="{{ 'true' if errors.get('password') else 'false' }}" aria-describedby="password-help">
+    <span id="password-help" class="field-help">{% if mode == 'crear' %}Mínimo 10 caracteres.{% else %}Deja este campo vacío para conservar la contraseña actual; si la cambias, usa al menos 10 caracteres.{% endif %}</span>
+    {% if errors.get('password') %}<span class="field-error">{{ errors.password }}</span>{% endif %}
+
+    <div class="form-actions">
+      <a class="button button--quiet" href="{{ url_for('admin_users.index') }}">Cancelar</a>
+      <button class="button button--primary" type="submit">{% if mode == 'crear' %}Crear cuenta{% else %}Guardar cambios{% endif %}</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

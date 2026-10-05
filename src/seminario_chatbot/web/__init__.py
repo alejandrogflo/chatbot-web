@@ -2,7 +2,7 @@
 
 import os
 
-from flask import Flask, request
+from flask import Flask
 
 from seminario_chatbot.settings import get_settings
 
@@ -33,17 +33,14 @@ def create_app() -> Flask:
     )
 
     from seminario_chatbot.web.auth import auth_bp
+    from seminario_chatbot.web.admin_users import admin_users_bp
     from seminario_chatbot.web.main import main_bp
-    from seminario_chatbot.web.security import csrf_token, validate_csrf
+    from seminario_chatbot.web.security import csrf_token
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_users_bp)
     app.register_blueprint(main_bp)
     app.context_processor(lambda: {"csrf_token": csrf_token})
-
-    @app.before_request
-    def protect_mutating_requests() -> None:
-        if request.method in {"POST", "PUT", "PATCH", "DELETE"}:
-            validate_csrf()
 
     @app.errorhandler(400)
     def bad_request(error):

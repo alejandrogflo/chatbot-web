@@ -11,10 +11,10 @@
 <section class="welcome-block">
   <p class="eyebrow">ADMINISTRACIÓN</p>
   <h1>Panel de control</h1>
-  <p class="muted">Hola, {{ user.nombre }}. La gestión de cuentas y catálogos se habilitará en los próximos incrementos.</p>
+  <p class="muted">Hola, {{ user.nombre }}. La gestión de cuentas está disponible; el mantenimiento de catálogos llegará en los próximos incrementos.</p>
 </section>
 <section class="feature-grid">
-  <article class="feature-card"><span class="card-number">01</span><span class="card-icon">◎</span><h2>Usuarios</h2><p>Alta, consulta, actualización y baja de cuentas.</p><span class="status-pill status-pill--muted">Próximo módulo</span></article>
+  <a class="feature-card feature-card--link" href="{{ url_for('admin_users.index') }}"><span class="card-number">01</span><span class="card-icon">◎</span><h2>Usuarios</h2><p>Alta, consulta, actualización y baja de cuentas.</p><span class="status-pill">Gestionar usuarios ↗</span></a>
   <article class="feature-card"><span class="card-number">02</span><span class="card-icon">▤</span><h2>Películas</h2><p>Mantenimiento del catálogo proporcionado para el proyecto.</p><span class="status-pill status-pill--muted">Próximo módulo</span></article>
   <article class="feature-card"><span class="card-number">03</span><span class="card-icon">▣</span><h2>Videojuegos</h2><p>Mantenimiento del catálogo existente de videojuegos.</p><span class="status-pill status-pill--muted">Próximo módulo</span></article>
 </section>

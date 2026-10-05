@@ -72,7 +72,7 @@ Si ya habías instalado el proyecto antes de agregar esos comandos, actualiza la
 
 Abre `http://127.0.0.1:5000` e inicia sesión con la cuenta recién creada. El comando web usa `127.0.0.1:5000` por defecto; se puede cambiar con `FLASK_HOST` y `FLASK_PORT`. La base de datos debe tener aplicada la migración aditiva `database/001_support_tables.sql`.
 
-La pantalla privada y el panel administrativo forman el primer incremento web. El CRUD de cuentas y catálogos, el chat web, el historial y la gráfica se incorporarán en los siguientes incrementos.
+El primer incremento web incluye acceso privado y panel administrativo. El incremento F-002 añade la gestión de cuentas; el CRUD de catálogos, el chat web, el historial y la gráfica se incorporarán en los siguientes incrementos.
 
 ## Explorar el flujo
 
@@ -133,7 +133,7 @@ Los cambios futuros al esquema deben ir en una migración numerada nueva, no en 
 
 ## Estado de esta etapa
 
-La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incorpora las primeras pantallas Flask, el login/logout y la autorización por rol; su revisión en ejecución queda pendiente. Los siguientes incrementos añadirán CRUD administrativo, chat web, historial privado y gráfica de consumo.
+La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios. La revisión en ejecución de esos incrementos queda pendiente. Los siguientes incrementos añadirán CRUD de catálogos, chat web, historial privado y gráfica de consumo.
 
 ## Material de referencia
 

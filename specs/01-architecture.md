@@ -1,7 +1,7 @@
 # Arquitectura y decisiones técnicas
 
-**Estado:** Base técnica acordada; autenticación web implementada inicialmente
-**Actualizado:** 2026-10-04
+**Estado:** Base técnica acordada; autenticación y CRUD de usuarios implementados inicialmente
+**Actualizado:** 2026-10-05
 
 ## Tecnologías
 
@@ -27,11 +27,12 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 - Configuración por variables de entorno, ejemplos de evaluación del planificador y CLI para explorar el grafo.
 - Migración aditiva `database/001_support_tables.sql`, ya aplicada en el entorno local según `AGENTS.md`.
 - Aplicación Flask inicial con login/logout, sesiones protegidas, autorización administrativa por solicitud, comando de primer administrador y formularios protegidos con CSRF.
+- CRUD web inicial de usuarios: repositorio con consultas parametrizadas, formulario de alta/edición y listado sin hashes, eliminación protegida y límites para conservar acceso administrador.
 
 ### Pendiente
 
-- Revisión en ejecución de los criterios de autenticación y autorización F-001.
-- CRUD web administrativo de usuarios y catálogos.
+- Revisión en ejecución de los criterios de autenticación y autorización F-001 y F-002.
+- CRUD web administrativo de películas y videojuegos.
 - Persistencia web de preguntas, respuestas y consumo.
 - Historial privado y agregación/gráfica de consumo.
 - Instrucciones finales de ejecución y guion de demostración.
@@ -46,9 +47,9 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 
 La estructura concreta de módulos puede ajustarse al implementar, conservando esos límites. No añadir capas o dependencias sin una necesidad clara del alcance.
 
-### Organización prevista del paquete
+### Organización del paquete
 
-Al iniciar F-001, incorporar la capa web dentro de `src/seminario_chatbot/`: `web/` para la fábrica Flask, blueprints, templates y estáticos; `services/` para coordinar casos de uso cuando las rutas lo requieran; y `repositories/` para el acceso PostgreSQL por dominio. Crear módulos conforme se implementen las funcionalidades, sin carpetas vacías ni una capa genérica anticipada. Mantener `ai/`, `evaluation/` y la CLI como componentes separados.
+La capa web vive dentro de `src/seminario_chatbot/`: `web/` contiene la fábrica Flask, blueprints, templates y estáticos; `repositories/` contiene acceso PostgreSQL por dominio. Añadir servicios cuando una coordinación de casos de uso los requiera, sin carpetas vacías ni una capa genérica anticipada. Mantener `ai/`, `evaluation/` y la CLI como componentes separados.
 
 ## Flujo de chat
 
@@ -98,3 +99,9 @@ La migración `001` ya se aplicó localmente; los cambios futuros requieren una 
 - El primer administrador se aprovisiona con `create-admin`, que solicita la contraseña de forma oculta y serializa el alta inicial con un bloqueo advisory de PostgreSQL.
 - La web requiere `SECRET_KEY`; la cookie de sesión es HttpOnly y SameSite=Lax, y puede habilitar Secure mediante `SESSION_COOKIE_SECURE` cuando se use HTTPS.
 - La validación en ejecución de F-001 y los detalles del entorno final de demostración siguen pendientes; las credenciales y URL locales no se copian a código.
+
+## Decisiones confirmadas durante F-002
+
+- El CRUD reutiliza `public.usuarios` y el índice único existente sobre `LOWER(correo)`; no añade migración.
+- Las vistas administrativas solo consultan y presentan id, nombre, correo, rol y fecha; nunca leen el hash de contraseña para mostrarse.
+- Al eliminar una cuenta se informa del borrado en cascada de conversaciones, mensajes y consumo. No se puede borrar la propia cuenta ni quitar la última cuenta administradora.
