@@ -7,6 +7,7 @@
     <nav class="app-nav" aria-label="Navegación principal">
       <a href="{{ url_for('main.chat') }}">Chat</a>
       <a href="{{ url_for('main.history') }}">Historial</a>
+      <a href="{{ url_for('main.consumption') }}">Consumo</a>
       {% if user.rol == 'admin' %}<a href="{{ url_for('main.admin_panel') }}">Administración</a>{% endif %}
     </nav>
     <span class="user-chip"><span class="avatar">{{ user.nombre[:1]|upper }}</span>{{ user.nombre }} <span class="role-label">{{ user.rol }}</span></span>
@@ -35,10 +36,10 @@
     <h2>Tu historial</h2><p>Consulta tus preguntas y respuestas anteriores de forma privada.</p>
     <span class="status-pill">Ver historial <span aria-hidden="true">↗</span></span>
   </a>
-  <article class="feature-card">
+  <a class="feature-card feature-card--active feature-card--link" href="{{ url_for('main.consumption') }}">
     <span class="card-number">03</span><span class="card-icon">▥</span>
     <h2>Consumo aproximado</h2><p>Explora el conteo académico separado por categoría.</p>
-    <span class="status-pill status-pill--muted">Próximamente</span>
-  </article>
+    <span class="status-pill">Ver resumen <span aria-hidden="true">↗</span></span>
+  </a>
 </section>
 {% endblock %}

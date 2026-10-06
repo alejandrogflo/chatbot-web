@@ -11,7 +11,7 @@ El orden prioriza dependencias y entrega incrementos visibles. Los estados refle
 | F-002 | CRUD administrativo de usuarios | Completa | Listado seguro, creación, validaciones, edición, confirmación y eliminación revisados manualmente por el usuario el 2026-10-05 |
 | F-003 | CRUD administrativo de películas y videojuegos | Completa | Integración con PostgreSQL verificada con registros temporales; conteos existentes conservados |
 | F-004 | Chat web e historial privado | Completa | Chat e historial validados manualmente por el usuario el 2026-10-05 |
-| F-005 | Registro y gráfica de consumo | Pendiente | Guarda conteo por pregunta y separa categorías |
+| F-005 | Registro y gráfica de consumo | Completa | Cada intercambio guarda el consumo y `/consumo` presenta agregados privados por categoría |
 | M3 | Preparación de entrega | Pendiente | Configuración reproducible, revisión integral y demostración de 2–3 minutos |
 
 ## Dependencias

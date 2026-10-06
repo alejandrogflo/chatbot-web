@@ -14,8 +14,16 @@ def _connect() -> psycopg.Connection:
     return psycopg.connect(database_url, connect_timeout=5, row_factory=dict_row)
 
 
-def save_exchange(user_id: int, question: str, answer: str) -> int:
-    """Guarda una consulta independiente y sus dos mensajes en una transacción."""
+def save_exchange(
+    user_id: int,
+    question: str,
+    answer: str,
+    *,
+    category: str | None,
+    academic_tokens: int,
+    provider_tokens: int,
+) -> int:
+    """Guarda conversación, mensajes y consumo en una sola transacción."""
     with _connect() as connection:
         conversation = connection.execute(
             """
@@ -32,6 +40,19 @@ def save_exchange(user_id: int, question: str, answer: str) -> int:
             VALUES (%s, 'usuario', %s), (%s, 'asistente', %s)
             """,
             (conversation_id, question, conversation_id, answer),
+        )
+        connection.execute(
+            """
+            INSERT INTO public.consumo_tokens (
+                id_usuario,
+                id_conversacion,
+                categoria,
+                tokens,
+                tokens_proveedor
+            )
+            VALUES (%s, %s, %s, %s, %s)
+            """,
+            (user_id, conversation_id, category, academic_tokens, provider_tokens),
         )
         return conversation_id
 

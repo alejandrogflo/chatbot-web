@@ -10,6 +10,7 @@ from seminario_chatbot.repositories.conversations import (
     find_user_conversation,
     list_user_conversations,
 )
+from seminario_chatbot.repositories.consumption import summarize_user_consumption
 from seminario_chatbot.services.chat import ChatProcessingError, process_question
 from seminario_chatbot.web.security import admin_required, login_required
 
@@ -118,6 +119,62 @@ def history():
         "history.html",
         user=g.current_user,
         conversations=conversations,
+    )
+
+
+@main_bp.get("/consumo")
+@login_required
+def consumption():
+    try:
+        rows = summarize_user_consumption(g.current_user["id_usuario"])
+    except DatabaseConfigurationError:
+        logger.exception("No está configurada la base de datos para leer el consumo.")
+        abort(
+            503,
+            description="No se pudo cargar el consumo. Revisa la configuración de PostgreSQL.",
+        )
+    except psycopg.Error:
+        logger.exception("No se pudo leer el consumo desde PostgreSQL.")
+        abort(
+            503,
+            description="No se pudo cargar el consumo. Revisa la conexión con PostgreSQL.",
+        )
+
+    grouped = {row["categoria"]: row for row in rows}
+    categories = [
+        ("peliculas", "Películas"),
+        ("videojuegos", "Videojuegos"),
+        (None, "Sin categoría"),
+    ]
+    series = []
+    for category, label in categories:
+        row = grouped.get(category, {})
+        series.append(
+            {
+                "label": label,
+                "tokens_palabras": int(row.get("tokens_palabras", 0)),
+                "tokens_proveedor": int(row.get("tokens_proveedor", 0)),
+                "consultas": int(row.get("consultas", 0)),
+            }
+        )
+
+    total_academic = sum(item["tokens_palabras"] for item in series)
+    total_provider = sum(item["tokens_proveedor"] for item in series)
+    total_consultations = sum(item["consultas"] for item in series)
+    scale = max((item["tokens_palabras"] for item in series), default=0)
+    for item in series:
+        item["percentage"] = (
+            round(item["tokens_palabras"] / scale * 100, 1) if scale else 0
+        )
+
+    return render_template(
+        "consumption.html",
+        user=g.current_user,
+        series=series,
+        total_academic=total_academic,
+        total_provider=total_provider,
+        total_consultations=total_consultations,
+        chart_scale=scale if scale else 1,
     )
 
 

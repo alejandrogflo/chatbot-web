@@ -1,6 +1,6 @@
 # Arquitectura y decisiones técnicas
 
-**Estado:** Base técnica acordada; F-001, F-002, F-003 y F-004 implementados y revisados por código
+**Estado:** Base técnica acordada; F-001 a F-005 implementados
 **Actualizado:** 2026-10-05
 
 ## Tecnologías
@@ -30,10 +30,10 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 - CRUD web inicial de usuarios: repositorio con consultas parametrizadas, formulario de alta/edición y listado sin hashes, eliminación protegida y límites para conservar acceso administrador.
 - CRUD web de películas y videojuegos sobre las tablas existentes, con repositorio allowlist, valores parametrizados y rutas administrativas protegidas; integración revisada el 2026-10-05.
 - Chat web que invoca `run_chat` por pregunta, guarda cada intercambio en una transacción y ofrece historial privado por usuario; el usuario validó manualmente F-004 el 2026-10-05.
+- Consumo académico y del proveedor guardado junto a cada intercambio, agregado exclusivamente por usuario autenticado y mostrado en la página privada `/consumo`.
 
 ### Pendiente
 
-- Registro de consumo aproximado por pregunta y agregación/gráfica separada por categoría (F-005).
 - Instrucciones finales de ejecución y guion de demostración.
 
 ## Componentes propuestos
@@ -79,7 +79,7 @@ La migración existente añade:
 - `mensajes`, con roles usuario/asistente.
 - `consumo_tokens`, vinculado a usuario y conversación, con categoría y conteos académico y del proveedor.
 
-La migración `001` ya se aplicó localmente; los cambios futuros requieren una nueva migración numerada. Para mantener aislado el historial y vincular cada costo a una consulta independiente, la aplicación crea una conversación por pregunta con un mensaje de usuario y uno de asistente. F-005 asociará el consumo a esa conversación.
+Las migraciones `001` y `002` ya se aplicaron localmente; los cambios futuros requieren una nueva migración numerada. Para mantener aislado el historial y vincular cada costo a una consulta independiente, la aplicación crea una conversación por pregunta con un mensaje de usuario y uno de asistente. F-005 asocia el consumo a esa conversación.
 
 ## Límites de seguridad
 
@@ -121,3 +121,12 @@ La migración `001` ya se aplicó localmente; los cambios futuros requieren una 
 - El historial se presenta en tabla y el repositorio condiciona tanto la lista como el detalle por `id_usuario`; el detalle de una conversación ajena devuelve 404.
 - No se añade migración ni se escribe en `consumo_tokens`; el consumo queda para F-005.
 - El usuario confirmó la validación manual de F-004 el 2026-10-05. No se ejecutaron suites automatizadas.
+
+## Decisiones para F-005
+
+- Cada intercambio persiste en la misma transacción sus mensajes y el consumo académico y del proveedor asociado a la conversación.
+- El conteo académico usa el total de palabras que el grafo ya calcula en los prompts enviados y la respuesta generada; el consumo real de Groq se conserva aparte cuando el proveedor lo reporta.
+- Una consulta sin categoría identificable también se registra, con `categoria = NULL`, para conservar el consumo de planificación sin asignarlo falsamente a películas o videojuegos. El resumen distingue ese consumo como “Sin categoría”.
+- La migración `002` solo relaja la nulabilidad de `consumo_tokens.categoria`; conserva la restricción de valores permitidos para las categorías conocidas y no altera catálogos.
+- La gráfica muestra el total académico agregado por películas, videojuegos y consultas sin categoría; los datos y totales se consultan por el usuario autenticado en el servidor.
+- La migración `002` se aplicó a la base local `postgres` el 2026-10-05.

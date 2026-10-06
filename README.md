@@ -70,9 +70,9 @@ seminario-web
 
 Si ya habías instalado el proyecto antes de agregar esos comandos, actualiza la instalación con `python -m pip install -e .`.
 
-Abre `http://127.0.0.1:5000` e inicia sesión con la cuenta recién creada. El comando web usa `127.0.0.1:5000` por defecto; se puede cambiar con `FLASK_HOST` y `FLASK_PORT`. La base de datos debe tener aplicada la migración aditiva `database/001_support_tables.sql`.
+Abre `http://127.0.0.1:5000` e inicia sesión con la cuenta recién creada. El comando web usa `127.0.0.1:5000` por defecto; se puede cambiar con `FLASK_HOST` y `FLASK_PORT`. La base de datos debe tener aplicadas las migraciones aditivas `database/001_support_tables.sql` y `database/002_nullable_consumption_category.sql`.
 
-La aplicación web incluye acceso privado, panel administrativo, chat sobre el catálogo e historial por cuenta. El historial guarda cada pregunta y respuesta en su propia conversación. El registro y la gráfica de consumo aproximado se incorporarán en F-005.
+La aplicación web incluye acceso privado, panel administrativo, chat sobre el catálogo, historial por cuenta y una gráfica privada de consumo aproximado por categoría. El historial y el consumo se vinculan a cada pregunta.
 
 ## Explorar el flujo
 
@@ -123,17 +123,18 @@ Esto puede consumir cuota de la API. Ejecuta el comando al cambiar el prompt o e
 
 ## Esquema SQL de soporte
 
-`database/001_support_tables.sql` añade las tablas de usuarios, conversaciones, mensajes y consumo. Ya se aplicó a la base local `postgres`; los catálogos quedaron intactos. En una base nueva, primero confirma los nombres y columnas de catálogo, luego aplica la migración desde la raíz del proyecto:
+`database/001_support_tables.sql` añade las tablas de usuarios, conversaciones, mensajes y consumo. `database/002_nullable_consumption_category.sql` permite registrar el consumo de consultas cuya categoría no se pudo identificar. Ambas migraciones son aditivas y no cambian los catálogos. En una base nueva, primero confirma los nombres y columnas de catálogo, luego aplica ambas migraciones desde la raíz del proyecto:
 
 ```bash
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/001_support_tables.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/002_nullable_consumption_category.sql
 ```
 
-Los cambios futuros al esquema deben ir en una migración numerada nueva, no en la migración ya aplicada.
+Las migraciones `001` y `002` ya se aplicaron a la base local `postgres`. En una base existente que ya tenga `001`, aplica solo `002`. Los cambios futuros al esquema deben ir en una migración numerada nueva, no en migraciones ya aplicadas.
 
 ## Estado de esta etapa
 
-La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios; F-003 añade gestión de películas y videojuegos; F-004 integra el grafo con el chat web y el historial privado. F-003 se verificó con Flask test client y PostgreSQL local, usando filas temporales que se eliminaron al terminar. El usuario confirmó la validación manual de F-004 el 2026-10-05. El siguiente incremento es F-005: registro y gráfica de consumo aproximado.
+La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios; F-003 añade gestión de películas y videojuegos; F-004 integra el grafo con el chat web y el historial privado; F-005 guarda el consumo aproximado y muestra sus agregados por categoría. F-003 se verificó con Flask test client y PostgreSQL local, usando filas temporales que se eliminaron al terminar. El usuario confirmó la validación manual de F-004 el 2026-10-05.
 
 ## Material de referencia
 

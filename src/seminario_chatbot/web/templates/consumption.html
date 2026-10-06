@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Consumo · Seminario Chatbot{% endblock %}
+{% block content %}
+<header class="topbar">
+  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Catálogo</span></a>
+  <div class="topbar-actions">
+    <nav class="app-nav" aria-label="Navegación principal">
+      <a href="{{ url_for('main.chat') }}">Chat</a>
+      <a href="{{ url_for('main.history') }}">Historial</a>
+      <a class="app-nav--current" href="{{ url_for('main.consumption') }}" aria-current="page">Consumo</a>
+      {% if user.rol == 'admin' %}<a href="{{ url_for('main.admin_panel') }}">Administración</a>{% endif %}
+    </nav>
+    <span class="user-chip"><span class="avatar">{{ user.nombre[:1]|upper }}</span>{{ user.nombre }}</span>
+    <form method="post" action="{{ url_for('auth.logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="button button--quiet" type="submit">Cerrar sesión</button>
+    </form>
+  </div>
+</header>
+
+<section class="welcome-block welcome-block--compact">
+  <p class="eyebrow">TU USO DE IA</p>
+  <h1>Consumo aproximado</h1>
+  <p class="muted">Revisa el consumo de tus propias consultas y compáralo por categoría.</p>
+</section>
+
+<section class="usage-metrics" aria-label="Totales de consumo">
+  <article class="usage-metric">
+    <span class="usage-metric-label">Palabras procesadas</span>
+    <strong>{{ '{:,}'.format(total_academic).replace(',', ' ') }}</strong>
+    <span class="usage-metric-caption">tokens aproximados</span>
+  </article>
+  <article class="usage-metric">
+    <span class="usage-metric-label">Tokens del proveedor</span>
+    <strong>{{ '{:,}'.format(total_provider).replace(',', ' ') }}</strong>
+    <span class="usage-metric-caption">reportados por Groq</span>
+  </article>
+  <article class="usage-metric">
+    <span class="usage-metric-label">Consultas registradas</span>
+    <strong>{{ '{:,}'.format(total_consultations).replace(',', ' ') }}</strong>
+    <span class="usage-metric-caption">en tu cuenta</span>
+  </article>
+</section>
+
+<section class="usage-panel" aria-labelledby="usage-chart-title">
+  <div class="usage-panel-heading">
+    <div>
+      <p class="eyebrow">DESGLOSE PERSONAL</p>
+      <h2 id="usage-chart-title">Palabras aproximadas por categoría</h2>
+    </div>
+    <span class="usage-total">{{ '{:,}'.format(total_academic).replace(',', ' ') }} tokens</span>
+  </div>
+  <ul class="usage-chart">
+    {% for item in series %}
+      <li class="usage-chart-row">
+        <div class="usage-chart-label">
+          <span>{{ item.label }}</span>
+          <strong>{{ '{:,}'.format(item.tokens_palabras).replace(',', ' ') }}</strong>
+        </div>
+        <div class="usage-track" role="progressbar" aria-label="{{ item.label }}: {{ item.tokens_palabras }} tokens aproximados" aria-valuemin="0" aria-valuemax="{{ chart_scale }}" aria-valuenow="{{ item.tokens_palabras }}">
+          <span class="usage-bar usage-bar--{{ loop.index }}" style="width: {{ item.percentage }}%"></span>
+        </div>
+        <span class="usage-chart-caption">{{ item.consultas }} {{ 'consulta' if item.consultas == 1 else 'consultas' }} · {{ '{:,}'.format(item.tokens_proveedor).replace(',', ' ') }} tokens del proveedor</span>
+      </li>
+    {% endfor %}
+  </ul>
+  {% if total_consultations == 0 %}
+    <div class="empty-state usage-empty">
+      <span class="card-icon" aria-hidden="true">▥</span>
+      <h2>Aún no hay consumo registrado</h2>
+      <p>Cuando completes una consulta, sus palabras procesadas aparecerán aquí.</p>
+      <a class="button button--primary" href="{{ url_for('main.chat') }}">Hacer una consulta <span aria-hidden="true">↗</span></a>
+    </div>
+  {% endif %}
+</section>
+<p class="usage-note">Aproximación académica: cada palabra en los textos procesados por la IA cuenta como un token. El total del proveedor se muestra aparte cuando Groq informa su consumo real.</p>
+{% endblock %}

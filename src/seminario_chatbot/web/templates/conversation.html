@@ -7,6 +7,7 @@
     <nav class="app-nav" aria-label="Navegación principal">
       <a href="{{ url_for('main.chat') }}">Chat</a>
       <a class="app-nav--current" href="{{ url_for('main.history') }}" aria-current="page">Historial</a>
+      <a href="{{ url_for('main.consumption') }}">Consumo</a>
       {% if user.rol == 'admin' %}<a href="{{ url_for('main.admin_panel') }}">Administración</a>{% endif %}
     </nav>
     <span class="user-chip"><span class="avatar">{{ user.nombre[:1]|upper }}</span>{{ user.nombre }}</span>
