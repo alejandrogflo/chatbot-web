@@ -16,7 +16,7 @@ h1, h2, .wordmark { font-family: 'Avenir Next', Inter, 'Segoe UI', sans-serif; }
 .muted { color: var(--muted); line-height: 1.65; }
 .stack { display: flex; flex-direction: column; margin-top: 32px; }
 label { color: #41544e; font-size: .86rem; font-weight: 600; margin-bottom: 8px; }
-input[type=email], input[type=password] { width: 100%; height: 49px; border: 1px solid #dce6e0; border-radius: 9px; background: #fcfdfc; padding: 0 14px; font: inherit; color: var(--ink); outline: none; transition: border .15s, box-shadow .15s; }
+input[type=email], input[type=password], input[type=number] { width: 100%; height: 49px; border: 1px solid #dce6e0; border-radius: 9px; background: #fcfdfc; padding: 0 14px; font: inherit; color: var(--ink); outline: none; transition: border .15s, box-shadow .15s; }
 input:focus { border-color: #61a38e; box-shadow: 0 0 0 3px rgba(23,116,95,.11); }
 input[type=password] { margin-bottom: 23px; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-height: 42px; border: 0; border-radius: 8px; padding: 0 16px; color: inherit; background: transparent; font: 600 .9rem Inter, 'Avenir Next', 'Segoe UI', sans-serif; text-decoration: none; cursor: pointer; }
@@ -61,11 +61,12 @@ input[type=password] { margin-bottom: 23px; }
 .data-warning { padding: 14px 17px; margin-bottom: 17px; border: 1px solid #f1d6b1; border-radius: 10px; color: #795127; background: #fff8ed; font-size: .86rem; line-height: 1.55; }
 .table-card { margin-bottom: 70px; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: 0 8px 25px rgba(31,69,58,.035); }
 .table-wrap { overflow-x: auto; }
-.users-table { width: 100%; border-collapse: collapse; min-width: 780px; text-align: left; font-size: .86rem; }
-.users-table th { color: #75847e; background: #f7faf8; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
-.users-table th, .users-table td { padding: 15px 17px; border-bottom: 1px solid var(--line); }
-.users-table tbody tr:last-child td { border-bottom: 0; }
-.users-table td { color: #4a5a54; }
+.users-table, .catalog-table { width: 100%; border-collapse: collapse; min-width: 780px; text-align: left; font-size: .86rem; }
+.catalog-table { min-width: 850px; }
+.users-table th, .catalog-table th { color: #75847e; background: #f7faf8; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
+.users-table th, .users-table td, .catalog-table th, .catalog-table td { padding: 15px 17px; border-bottom: 1px solid var(--line); }
+.users-table tbody tr:last-child td, .catalog-table tbody tr:last-child td { border-bottom: 0; }
+.users-table td, .catalog-table td { color: #4a5a54; }
 .table-name, .table-id { display: block; }
 .table-name { color: var(--ink); font-weight: 600; }
 .table-id { color: #99a49f; font-size: .74rem; margin-top: 4px; }
@@ -83,7 +84,8 @@ input[type=password] { margin-bottom: 23px; }
 .form-page h1 { margin-bottom: 8px; font-size: clamp(2rem, 4vw, 2.7rem); letter-spacing: -.055em; }
 .form-page > .muted { margin-bottom: 25px; }
 .account-form { display: flex; flex-direction: column; gap: 0; padding: 30px; }
-.account-form input[type=text], .account-form input[type=email], .account-form input[type=password], .account-form select { width: 100%; height: 47px; margin: 0 0 10px; padding: 0 13px; border: 1px solid #dce6e0; border-radius: 8px; color: var(--ink); background: #fcfdfc; font: inherit; }
+.account-form input[type=text], .account-form input[type=email], .account-form input[type=password], .account-form input[type=number], .account-form select, .account-form textarea { width: 100%; min-height: 47px; margin: 0 0 10px; padding: 0 13px; border: 1px solid #dce6e0; border-radius: 8px; color: var(--ink); background: #fcfdfc; font: inherit; }
+.account-form textarea { min-height: 105px; padding: 11px 13px; resize: vertical; }
 .account-form select { appearance: auto; }
 .account-form input:focus, .account-form select:focus { outline: none; border-color: #61a38e; box-shadow: 0 0 0 3px rgba(23,116,95,.11); }
 .account-form input[aria-invalid="true"], .account-form select[aria-invalid="true"] { border-color: #c7584a; }

@@ -28,10 +28,11 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 - Migración aditiva `database/001_support_tables.sql`, ya aplicada en el entorno local según `AGENTS.md`.
 - Aplicación Flask inicial con login/logout, sesiones protegidas, autorización administrativa por solicitud, comando de primer administrador y formularios protegidos con CSRF.
 - CRUD web inicial de usuarios: repositorio con consultas parametrizadas, formulario de alta/edición y listado sin hashes, eliminación protegida y límites para conservar acceso administrador.
+- CRUD web inicial de películas y videojuegos sobre las tablas existentes, con repositorio allowlist, valores parametrizados y rutas administrativas protegidas.
 
 ### Pendiente
 
-- CRUD web administrativo de películas y videojuegos.
+- Revisión manual de los criterios de F-003.
 - Persistencia web de preguntas, respuestas y consumo.
 - Historial privado y agregación/gráfica de consumo.
 - Instrucciones finales de ejecución y guion de demostración.

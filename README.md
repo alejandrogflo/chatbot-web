@@ -4,7 +4,7 @@ Aplicación Python con PostgreSQL y un flujo LangGraph para contestar preguntas 
 
 ## Desarrollo con SDD
 
-El trabajo se organiza como especificación → plan → tareas → implementación. Consulta [specs/README.md](specs/README.md) para el flujo y [specs/02-roadmap.md](specs/02-roadmap.md) para el estado. `pf.md` conserva el enunciado original; las specs convierten sus requisitos en incrementos implementables. F-001 (autenticación) y F-002 (gestión de usuarios) están completos y revisados manualmente; el flujo de Git está resumido abajo y las reglas completas están en [AGENTS.md](AGENTS.md).
+El trabajo se organiza como especificación → plan → tareas → implementación. Consulta [specs/README.md](specs/README.md) para el flujo y [specs/02-roadmap.md](specs/02-roadmap.md) para el estado. `pf.md` conserva el enunciado original; las specs convierten sus requisitos en incrementos implementables. F-001 (autenticación) y F-002 (gestión de usuarios) están completos; F-003 (administración de catálogos) está implementado inicialmente y pendiente de revisión manual. El flujo de Git está resumido abajo y las reglas completas están en [AGENTS.md](AGENTS.md).
 
 ## Flujo de Git y GitHub
 
@@ -133,7 +133,7 @@ Los cambios futuros al esquema deben ir en una migración numerada nueva, no en 
 
 ## Estado de esta etapa
 
-La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios. Sus recorridos principales se revisaron manualmente el 2026-10-05. Los siguientes incrementos añadirán CRUD de catálogos, chat web, historial privado y gráfica de consumo.
+La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios; F-003 añade gestión de películas y videojuegos desde el panel de administración. La implementación inicial de F-003 espera revisión manual. Después siguen el chat web, el historial privado y la gráfica de consumo.
 
 ## Material de referencia
 

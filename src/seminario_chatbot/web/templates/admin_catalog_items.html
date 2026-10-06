@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{{ catalog.label }} · Administración{% endblock %}
+{% block content %}
+<header class="topbar">
+  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ {{ catalog.label }}</span></a>
+  <div class="topbar-actions">
+    <span class="user-chip"><span class="avatar">{{ current_user.nombre[:1]|upper }}</span>{{ current_user.nombre }}</span>
+    <form method="post" action="{{ url_for('auth.logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="button button--quiet" type="submit">Cerrar sesión</button>
+    </form>
+  </div>
+</header>
+
+<section class="welcome-block welcome-block--compact">
+  <p class="eyebrow">ADMINISTRACIÓN · CATÁLOGOS</p>
+  <h1>{{ catalog.label }}</h1>
+  <p class="muted">Consulta y mantén los registros de este catálogo.</p>
+</section>
+
+<div class="admin-toolbar">
+  <a class="button button--quiet" href="{{ url_for('main.admin_panel') }}">← Panel de administración</a>
+  <a class="button button--primary" href="{{ url_for('admin_catalogs.create', catalog_key=catalog_key) }}">Crear {{ catalog.singular }} <span aria-hidden="true">＋</span></a>
+</div>
+
+<aside class="data-warning" role="note">
+  <strong>Antes de eliminar:</strong> el registro dejará de aparecer en futuras consultas del chatbot.
+</aside>
+
+<section class="table-card" aria-label="Registros de {{ catalog.label }}">
+  {% if items %}
+    <div class="table-wrap">
+      <table class="catalog-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            {% for field_name in catalog.list_fields %}<th>{{ field_labels[field_name] }}</th>{% endfor %}
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td>{{ item[catalog.id_column] }}</td>
+              {% for field_name in catalog.list_fields %}
+                <td>{{ item[field_name] if item[field_name] is not none else "—" }}</td>
+              {% endfor %}
+              <td>
+                <div class="row-actions">
+                  <a class="button button--quiet button--small" href="{{ url_for('admin_catalogs.edit', catalog_key=catalog_key, item_id=item[catalog.id_column]) }}">Editar</a>
+                  <form method="post" action="{{ url_for('admin_catalogs.remove', catalog_key=catalog_key, item_id=item[catalog.id_column]) }}" onsubmit="return confirm('¿Eliminar esta {{ catalog.singular }} del catálogo? Esta acción no se puede deshacer.');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="button button--danger button--small" type="submit">Eliminar</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state"><span class="card-icon">◎</span><h2>Aún no hay registros</h2><p>Usa “Crear {{ catalog.singular }}” para agregar el primero.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

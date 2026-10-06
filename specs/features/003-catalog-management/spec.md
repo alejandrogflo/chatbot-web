@@ -49,7 +49,7 @@ El administrador puede cambiar los campos del registro seleccionado. Tras guarda
 
 ### AC-6 — Validación
 
-Se rechazan el título vacío, valores numéricos con formato incorrecto, año o duración negativos, calificaciones fuera de 0–10, más de una cifra decimal y textos que exceden el límite del esquema. Los errores se presentan en español y no se guarda el registro inválido.
+Se rechazan el título vacío, valores numéricos con formato incorrecto o fuera del rango de PostgreSQL, año o duración negativos, calificaciones fuera de 0–10, más de una cifra decimal y textos que exceden el límite del esquema. Los errores se presentan en español y no se guarda el registro inválido.
 
 ### AC-7 — Eliminar
 

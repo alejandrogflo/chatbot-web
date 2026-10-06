@@ -33,11 +33,13 @@ def create_app() -> Flask:
     )
 
     from seminario_chatbot.web.auth import auth_bp
+    from seminario_chatbot.web.admin_catalogs import admin_catalogs_bp
     from seminario_chatbot.web.admin_users import admin_users_bp
     from seminario_chatbot.web.main import main_bp
     from seminario_chatbot.web.security import csrf_token
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_catalogs_bp)
     app.register_blueprint(admin_users_bp)
     app.register_blueprint(main_bp)
     app.context_processor(lambda: {"csrf_token": csrf_token})

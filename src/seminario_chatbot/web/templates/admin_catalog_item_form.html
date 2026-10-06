@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{% if item_id %}Editar{% else %}Crear{% endif %} {{ catalog.singular }} · Administración{% endblock %}
+{% block content %}
+<header class="topbar">
+  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ {{ catalog.label }}</span></a>
+  <a class="button button--quiet" href="{{ url_for('admin_catalogs.index', catalog_key=catalog_key) }}">Volver al listado</a>
+</header>
+
+<section class="form-page">
+  <p class="eyebrow">ADMINISTRACIÓN · {{ catalog.label|upper }}</p>
+  <h1>{% if item_id %}Editar{% else %}Crear{% endif %} {{ catalog.singular }}</h1>
+  <p class="muted">Completa los datos del registro. Los campos opcionales pueden dejarse vacíos.</p>
+
+  {% if errors %}
+    <div class="form-errors" role="alert">
+      <strong>Revisa estos campos:</strong>
+      <ul>{% for error in errors.values() %}<li>{{ error }}</li>{% endfor %}</ul>
+    </div>
+  {% endif %}
+
+  <form class="form-panel account-form catalog-form" method="post" action="{% if item_id %}{{ url_for('admin_catalogs.edit', catalog_key=catalog_key, item_id=item_id) }}{% else %}{{ url_for('admin_catalogs.create', catalog_key=catalog_key) }}{% endif %}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% for field in catalog.fields %}
+      <label for="{{ field.name }}">{{ field.label }}{% if field.get('required') %} <span aria-hidden="true">*</span>{% endif %}</label>
+      {% if field.kind == 'textarea' %}
+        <textarea id="{{ field.name }}" name="{{ field.name }}" rows="4" aria-invalid="{{ 'true' if errors.get(field.name) else 'false' }}">{{ values.get(field.name) or '' }}</textarea>
+      {% else %}
+        <input
+          id="{{ field.name }}"
+          name="{{ field.name }}"
+          type="{{ 'number' if field.kind in ['integer', 'decimal'] else 'text' }}"
+          value="{{ values.get(field.name) if values.get(field.name) is not none else '' }}"
+          {% if field.get('max_length') %}maxlength="{{ field.max_length }}"{% endif %}
+          {% if field.get('min') is not none %}min="{{ field.min }}"{% endif %}
+          {% if field.get('max') is not none %}max="{{ field.max }}"{% endif %}
+          {% if field.get('step') is not none %}step="{{ field.step }}"{% endif %}
+          {% if field.get('required') %}required{% endif %}
+          aria-invalid="{{ 'true' if errors.get(field.name) else 'false' }}"
+        >
+      {% endif %}
+      {% if errors.get(field.name) %}<span class="field-error">{{ errors[field.name] }}</span>{% endif %}
+    {% endfor %}
+
+    <div class="form-actions">
+      <a class="button button--quiet" href="{{ url_for('admin_catalogs.index', catalog_key=catalog_key) }}">Cancelar</a>
+      <button class="button button--primary" type="submit">{% if item_id %}Guardar cambios{% else %}Crear registro{% endif %}</button>
+    </div>
+  </form>
+</section>
+{% endblock %}
