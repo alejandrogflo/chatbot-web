@@ -52,6 +52,10 @@ def create_app() -> Flask:
     def forbidden(error):
         return _render_error(403, "No tienes permiso para abrir esta página.")
 
+    @app.errorhandler(404)
+    def not_found(error):
+        return _render_error(404, "No encontramos esta página o consulta.")
+
     @app.errorhandler(503)
     def unavailable(error):
         description = getattr(error, "description", "El servicio no está disponible.")

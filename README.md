@@ -4,7 +4,7 @@ Aplicación Python con PostgreSQL y un flujo LangGraph para contestar preguntas 
 
 ## Desarrollo con SDD
 
-El trabajo se organiza como especificación → plan → tareas → implementación. Consulta [specs/README.md](specs/README.md) para el flujo y [specs/02-roadmap.md](specs/02-roadmap.md) para el estado. `pf.md` conserva el enunciado original; las specs convierten sus requisitos en incrementos implementables. F-001 (autenticación), F-002 (gestión de usuarios) y F-003 (administración de catálogos) están completos. El flujo de Git está resumido abajo y las reglas completas están en [AGENTS.md](AGENTS.md).
+El trabajo se organiza como especificación → plan → tareas → implementación. Consulta [specs/README.md](specs/README.md) para el flujo y [specs/02-roadmap.md](specs/02-roadmap.md) para el estado. `pf.md` conserva el enunciado original; las specs convierten sus requisitos en incrementos implementables. F-001 (autenticación), F-002 (gestión de usuarios), F-003 (administración de catálogos) y F-004 (chat e historial privado) están completos. El flujo de Git está resumido abajo y las reglas completas están en [AGENTS.md](AGENTS.md).
 
 ## Flujo de Git y GitHub
 
@@ -72,7 +72,7 @@ Si ya habías instalado el proyecto antes de agregar esos comandos, actualiza la
 
 Abre `http://127.0.0.1:5000` e inicia sesión con la cuenta recién creada. El comando web usa `127.0.0.1:5000` por defecto; se puede cambiar con `FLASK_HOST` y `FLASK_PORT`. La base de datos debe tener aplicada la migración aditiva `database/001_support_tables.sql`.
 
-El primer incremento web incluye acceso privado y panel administrativo. El incremento F-002 añade la gestión de cuentas; el CRUD de catálogos, el chat web, el historial y la gráfica se incorporarán en los siguientes incrementos.
+La aplicación web incluye acceso privado, panel administrativo, chat sobre el catálogo e historial por cuenta. El historial guarda cada pregunta y respuesta en su propia conversación. El registro y la gráfica de consumo aproximado se incorporarán en F-005.
 
 ## Explorar el flujo
 
@@ -133,7 +133,7 @@ Los cambios futuros al esquema deben ir en una migración numerada nueva, no en 
 
 ## Estado de esta etapa
 
-La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios; F-003 añade gestión de películas y videojuegos desde el panel de administración. F-003 se verificó con Flask test client y PostgreSQL local, usando filas temporales que se eliminaron al terminar. Después siguen el chat web, el historial privado y la gráfica de consumo.
+La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios; F-003 añade gestión de películas y videojuegos; F-004 integra el grafo con el chat web y el historial privado. F-003 se verificó con Flask test client y PostgreSQL local, usando filas temporales que se eliminaron al terminar. F-004 se revisó contra sus criterios sin ejecutar pruebas, de acuerdo con las instrucciones del repositorio. El siguiente incremento es F-005: registro y gráfica de consumo aproximado.
 
 ## Material de referencia
 

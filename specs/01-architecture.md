@@ -1,6 +1,6 @@
 # Arquitectura y decisiones técnicas
 
-**Estado:** Base técnica acordada; F-001, F-002 y F-003 implementados y revisados
+**Estado:** Base técnica acordada; F-001, F-002, F-003 y F-004 implementados y revisados por código
 **Actualizado:** 2026-10-05
 
 ## Tecnologías
@@ -29,11 +29,11 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 - Aplicación Flask inicial con login/logout, sesiones protegidas, autorización administrativa por solicitud, comando de primer administrador y formularios protegidos con CSRF.
 - CRUD web inicial de usuarios: repositorio con consultas parametrizadas, formulario de alta/edición y listado sin hashes, eliminación protegida y límites para conservar acceso administrador.
 - CRUD web de películas y videojuegos sobre las tablas existentes, con repositorio allowlist, valores parametrizados y rutas administrativas protegidas; integración revisada el 2026-10-05.
+- Chat web que invoca `run_chat` por pregunta, guarda cada intercambio en una transacción y ofrece historial privado por usuario; F-004 revisado contra criterios sin ejecutar pruebas.
 
 ### Pendiente
 
-- Persistencia web de preguntas, respuestas y consumo.
-- Historial privado y agregación/gráfica de consumo.
+- Registro de consumo aproximado por pregunta y agregación/gráfica separada por categoría (F-005).
 - Instrucciones finales de ejecución y guion de demostración.
 
 ## Componentes propuestos
@@ -61,7 +61,8 @@ Solicitud autenticada
   -> modelo redacta a partir de esas filas
   -> evaluador determinista comprueba títulos
   -> respaldo desde datos si hace falta
-  -> guardar pregunta, respuesta y consumo
+  -> guardar pregunta y respuesta
+  -> registrar consumo (F-005)
   -> devolver respuesta e historial
 ```
 
@@ -78,7 +79,7 @@ La migración existente añade:
 - `mensajes`, con roles usuario/asistente.
 - `consumo_tokens`, vinculado a usuario y conversación, con categoría y conteos académico y del proveedor.
 
-La migración `001` ya se aplicó localmente; los cambios futuros requieren una nueva migración numerada. Para mantener aislado el historial y vincular cada costo a una consulta independiente, la aplicación debe crear una conversación por pregunta, con el mensaje del usuario, el del asistente y el consumo asociado.
+La migración `001` ya se aplicó localmente; los cambios futuros requieren una nueva migración numerada. Para mantener aislado el historial y vincular cada costo a una consulta independiente, la aplicación crea una conversación por pregunta con un mensaje de usuario y uno de asistente. F-005 asociará el consumo a esa conversación.
 
 ## Límites de seguridad
 
@@ -112,3 +113,11 @@ La migración `001` ya se aplicó localmente; los cambios futuros requieren una 
 - El repositorio mantiene un mapa fijo de tablas y columnas para ambas categorías. Los identificadores SQL salen solo de ese mapa y los valores del formulario se parametrizan.
 - El identificador y `fecha_registro` son de solo lectura para la interfaz; PostgreSQL los genera. El borrado se limita a una fila por solicitud POST protegida con CSRF y confirmación.
 - La comprobación de integración local usó y limpió filas temporales; los conteos quedaron en 50 películas y 68 videojuegos. El usuario aclaró que eliminó intencionalmente un videojuego desde el CRUD para probar F-003; por eso el conteo posterior es uno menos que las 69 filas registradas el 4 de octubre en `AGENTS.md`. Se conservó ese estado y no se restauró el registro.
+
+## Decisiones para F-004
+
+- El formulario web invoca `run_chat` con una pregunta nueva y limita el texto a 2,000 caracteres; no agrega memoria ni un checkpointer.
+- Cada consulta crea una fila en `conversaciones` y ambos mensajes en una transacción Psycopg. Una respuesta de respaldo o un error de configuración entregado por el grafo se conserva como respuesta del asistente.
+- El historial se presenta en tabla y el repositorio condiciona tanto la lista como el detalle por `id_usuario`; el detalle de una conversación ajena devuelve 404.
+- No se añade migración ni se escribe en `consumo_tokens`; el consumo queda para F-005.
+- La revisión del incremento fue estática. No se ejecutaron pruebas por la instrucción del repositorio de ejecutarlas solo a petición del usuario.

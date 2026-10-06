@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Chat · Seminario Chatbot{% endblock %}
+{% block content %}
+<header class="topbar">
+  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Catálogo</span></a>
+  <div class="topbar-actions">
+    <nav class="app-nav" aria-label="Navegación principal">
+      <a class="app-nav--current" href="{{ url_for('main.chat') }}" aria-current="page">Chat</a>
+      <a href="{{ url_for('main.history') }}">Historial</a>
+      {% if user.rol == 'admin' %}<a href="{{ url_for('main.admin_panel') }}">Administración</a>{% endif %}
+    </nav>
+    <span class="user-chip"><span class="avatar">{{ user.nombre[:1]|upper }}</span>{{ user.nombre }}</span>
+    <form method="post" action="{{ url_for('auth.logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="button button--quiet" type="submit">Cerrar sesión</button>
+    </form>
+  </div>
+</header>
+
+<section class="welcome-block welcome-block--compact chat-heading">
+  <p class="eyebrow">CONSULTA EL CATÁLOGO</p>
+  <h1>¿Qué te gustaría encontrar?</h1>
+  <p class="muted">Pregunta por películas o videojuegos. Cada consulta se procesa de forma independiente y se guarda en tu historial.</p>
+</section>
+
+<section class="chat-panel" aria-label="Enviar pregunta al catálogo">
+  <form method="post" action="{{ url_for('main.chat') }}" class="chat-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="question">Tu pregunta</label>
+    <textarea id="question" name="question" class="chat-input" rows="4" maxlength="2000" required placeholder="Ej.: ¿Qué películas de drama tienen una calificación mayor a 8?">{{ question }}</textarea>
+    {% if form_error %}<p class="field-error chat-error" role="alert">{{ form_error }}</p>{% endif %}
+    <div class="chat-form-footer">
+      <span class="field-help">Hasta 2,000 caracteres · Ejemplos: “3 películas de drama” o “videojuegos de aventura”.</span>
+      <button class="button button--primary" type="submit">Consultar <span aria-hidden="true">↗</span></button>
+    </div>
+  </form>
+</section>
+<p class="chat-note">La respuesta se basa en los registros disponibles en el catálogo.</p>
+{% endblock %}
