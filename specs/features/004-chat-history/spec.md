@@ -1,6 +1,6 @@
 # F-004 — Chat web e historial privado
 
-**Estado:** Completa; revisión estática el 2026-10-05, sin ejecución de pruebas según las instrucciones del repositorio
+**Estado:** Completa; validación manual confirmada por el usuario el 2026-10-05
 **Prioridad:** Necesaria para consultar los catálogos desde la aplicación y revisar respuestas anteriores
 **Depende de:** F-001 (autenticación), M2 (grafo LangGraph) y las tablas de soporte existentes
 

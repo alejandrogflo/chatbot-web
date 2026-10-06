@@ -133,7 +133,7 @@ Los cambios futuros al esquema deben ir en una migración numerada nueva, no en 
 
 ## Estado de esta etapa
 
-La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios; F-003 añade gestión de películas y videojuegos; F-004 integra el grafo con el chat web y el historial privado. F-003 se verificó con Flask test client y PostgreSQL local, usando filas temporales que se eliminaron al terminar. F-004 se revisó contra sus criterios sin ejecutar pruebas, de acuerdo con las instrucciones del repositorio. El siguiente incremento es F-005: registro y gráfica de consumo aproximado.
+La capa de IA y el acceso seguro de solo lectura a los catálogos ya están preparados. F-001 incluye login/logout y autorización por rol; F-002 incorpora el CRUD administrativo de usuarios; F-003 añade gestión de películas y videojuegos; F-004 integra el grafo con el chat web y el historial privado. F-003 se verificó con Flask test client y PostgreSQL local, usando filas temporales que se eliminaron al terminar. El usuario confirmó la validación manual de F-004 el 2026-10-05. El siguiente incremento es F-005: registro y gráfica de consumo aproximado.
 
 ## Material de referencia
 

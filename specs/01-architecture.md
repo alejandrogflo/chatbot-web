@@ -29,7 +29,7 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 - Aplicación Flask inicial con login/logout, sesiones protegidas, autorización administrativa por solicitud, comando de primer administrador y formularios protegidos con CSRF.
 - CRUD web inicial de usuarios: repositorio con consultas parametrizadas, formulario de alta/edición y listado sin hashes, eliminación protegida y límites para conservar acceso administrador.
 - CRUD web de películas y videojuegos sobre las tablas existentes, con repositorio allowlist, valores parametrizados y rutas administrativas protegidas; integración revisada el 2026-10-05.
-- Chat web que invoca `run_chat` por pregunta, guarda cada intercambio en una transacción y ofrece historial privado por usuario; F-004 revisado contra criterios sin ejecutar pruebas.
+- Chat web que invoca `run_chat` por pregunta, guarda cada intercambio en una transacción y ofrece historial privado por usuario; el usuario validó manualmente F-004 el 2026-10-05.
 
 ### Pendiente
 
@@ -120,4 +120,4 @@ La migración `001` ya se aplicó localmente; los cambios futuros requieren una 
 - Cada consulta crea una fila en `conversaciones` y ambos mensajes en una transacción Psycopg. Una respuesta de respaldo o un error de configuración entregado por el grafo se conserva como respuesta del asistente.
 - El historial se presenta en tabla y el repositorio condiciona tanto la lista como el detalle por `id_usuario`; el detalle de una conversación ajena devuelve 404.
 - No se añade migración ni se escribe en `consumo_tokens`; el consumo queda para F-005.
-- La revisión del incremento fue estática. No se ejecutaron pruebas por la instrucción del repositorio de ejecutarlas solo a petición del usuario.
+- El usuario confirmó la validación manual de F-004 el 2026-10-05. No se ejecutaron suites automatizadas.
