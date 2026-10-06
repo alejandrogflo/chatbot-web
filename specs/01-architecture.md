@@ -1,6 +1,6 @@
 # Arquitectura y decisiones técnicas
 
-**Estado:** Base técnica acordada; autenticación y CRUD de usuarios implementados inicialmente
+**Estado:** Base técnica acordada; F-001 y F-002 implementados y revisados manualmente
 **Actualizado:** 2026-10-05
 
 ## Tecnologías
@@ -31,7 +31,6 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 
 ### Pendiente
 
-- Revisión en ejecución de los criterios de autenticación y autorización F-001 y F-002.
 - CRUD web administrativo de películas y videojuegos.
 - Persistencia web de preguntas, respuestas y consumo.
 - Historial privado y agregación/gráfica de consumo.
@@ -98,10 +97,11 @@ La migración `001` ya se aplicó localmente; los cambios futuros requieren una 
 - Templates y estáticos viven dentro de `src/seminario_chatbot/web/` para distribuirlos junto al paquete Python.
 - El primer administrador se aprovisiona con `create-admin`, que solicita la contraseña de forma oculta y serializa el alta inicial con un bloqueo advisory de PostgreSQL.
 - La web requiere `SECRET_KEY`; la cookie de sesión es HttpOnly y SameSite=Lax, y puede habilitar Secure mediante `SESSION_COOKIE_SECURE` cuando se use HTTPS.
-- La validación en ejecución de F-001 y los detalles del entorno final de demostración siguen pendientes; las credenciales y URL locales no se copian a código.
+- El usuario confirmó manualmente el 2026-10-05 los recorridos principales de inicio/cierre de sesión, acceso anónimo, autorización por rol y mensaje genérico de credenciales inválidas. Los detalles del entorno final de demostración siguen pendientes; las credenciales y URL locales no se copian a código.
 
 ## Decisiones confirmadas durante F-002
 
 - El CRUD reutiliza `public.usuarios` y el índice único existente sobre `LOWER(correo)`; no añade migración.
 - Las vistas administrativas solo consultan y presentan id, nombre, correo, rol y fecha; nunca leen el hash de contraseña para mostrarse.
 - Al eliminar una cuenta se informa del borrado en cascada de conversaciones, mensajes y consumo. No se puede borrar la propia cuenta ni quitar la última cuenta administradora.
+- El usuario confirmó manualmente el 2026-10-05 el acceso por rol, el listado sin hashes, alta y validaciones, edición con contraseña vacía, confirmación y eliminación de cuentas de prueba.

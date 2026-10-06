@@ -1,6 +1,6 @@
 # F-002 — Administración de usuarios
 
-**Estado:** En curso; implementación inicial lista para revisión en ejecución
+**Estado:** Completa; recorridos principales revisados manualmente el 2026-10-05
 
 **Prioridad:** Necesaria para que el administrador gestione las cuentas de la aplicación
 

@@ -1,6 +1,6 @@
 # Tareas — F-001 Aplicación web y autenticación
 
-**Estado:** Implementación inicial completada; falta revisar en ejecución
+**Estado:** Completa; recorridos principales revisados manualmente el 2026-10-05
 **Especificación:** [spec.md](spec.md)  
 **Plan:** [plan.md](plan.md)
 
@@ -14,4 +14,5 @@
 - [x] Proteger formularios mutables con tokens CSRF y limitar redirecciones de retorno a rutas internas.
 - [x] Añadir páginas mínimas en español para login, inicio privado y acceso denegado.
 - [x] Actualizar README con configuración web, comando de primer administrador y forma de iniciar Flask.
-- [ ] Revisar AC-1 a AC-8 en ejecución y cerrar el incremento.
+- [x] Revisar en ejecución inicio/cierre de sesión, acceso anónimo, autorización por rol y credenciales inválidas.
+- [x] Cerrar el incremento y actualizar el roadmap.

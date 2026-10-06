@@ -1,6 +1,6 @@
 # F-001 — Aplicación web y autenticación
 
-**Estado:** En curso; implementación inicial lista para revisión en ejecución
+**Estado:** Completa; recorridos principales revisados manualmente el 2026-10-05
 **Prioridad:** Necesaria para habilitar el acceso privado y los siguientes módulos  
 **Depende de:** M1 (base PostgreSQL de soporte), ya disponible
 
