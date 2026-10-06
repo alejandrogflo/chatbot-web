@@ -1,6 +1,6 @@
 # Arquitectura y decisiones técnicas
 
-**Estado:** Base técnica acordada; F-001 y F-002 implementados y revisados manualmente
+**Estado:** Base técnica acordada; F-001, F-002 y F-003 implementados y revisados
 **Actualizado:** 2026-10-05
 
 ## Tecnologías
@@ -28,11 +28,10 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 - Migración aditiva `database/001_support_tables.sql`, ya aplicada en el entorno local según `AGENTS.md`.
 - Aplicación Flask inicial con login/logout, sesiones protegidas, autorización administrativa por solicitud, comando de primer administrador y formularios protegidos con CSRF.
 - CRUD web inicial de usuarios: repositorio con consultas parametrizadas, formulario de alta/edición y listado sin hashes, eliminación protegida y límites para conservar acceso administrador.
-- CRUD web inicial de películas y videojuegos sobre las tablas existentes, con repositorio allowlist, valores parametrizados y rutas administrativas protegidas.
+- CRUD web de películas y videojuegos sobre las tablas existentes, con repositorio allowlist, valores parametrizados y rutas administrativas protegidas; integración revisada el 2026-10-05.
 
 ### Pendiente
 
-- Revisión manual de los criterios de F-003.
 - Persistencia web de preguntas, respuestas y consumo.
 - Historial privado y agregación/gráfica de consumo.
 - Instrucciones finales de ejecución y guion de demostración.
@@ -112,3 +111,4 @@ La migración `001` ya se aplicó localmente; los cambios futuros requieren una 
 - El CRUD de catálogos reutiliza `public.peliculas` y `public.videojuegos`; no necesita migración ni cambia los campos suministrados por el docente.
 - El repositorio mantiene un mapa fijo de tablas y columnas para ambas categorías. Los identificadores SQL salen solo de ese mapa y los valores del formulario se parametrizan.
 - El identificador y `fecha_registro` son de solo lectura para la interfaz; PostgreSQL los genera. El borrado se limita a una fila por solicitud POST protegida con CSRF y confirmación.
+- La comprobación de integración local usó y limpió filas temporales; los conteos quedaron en 50 películas y 68 videojuegos. Este último difiere del conteo de 69 registrado previamente en `AGENTS.md`; la discrepancia no se corrigió como parte del incremento.

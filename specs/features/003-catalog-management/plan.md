@@ -21,4 +21,6 @@
 
 ## Verificación
 
-La aceptación se revisará manualmente con una cuenta de administrador y una cuenta normal, usando solo registros de prueba creados durante la revisión. No se ejecutarán pruebas automatizadas salvo que el usuario pida verificar el proyecto.
+A petición del usuario, se ejecutó una comprobación de integración puntual con Flask test client y PostgreSQL local. Cubrió acceso anónimo y de usuario normal, acceso administrador, formularios, validación, CSRF y CRUD en ambas tablas usando únicamente registros temporales que se eliminaron al terminar. No se añadió una suite permanente de pruebas.
+
+Los conteos al inicio y al final fueron 50 películas y 68 videojuegos. `AGENTS.md` registra 69 videojuegos en una verificación anterior; la diferencia se deja intacta para revisión separada y no se modificaron registros originales durante F-003.

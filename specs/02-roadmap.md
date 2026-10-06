@@ -9,7 +9,7 @@ El orden prioriza dependencias y entrega incrementos visibles. Los estados refle
 | M2 | Grafo de chat y consulta PostgreSQL | Completa | CLI, grafo LangGraph, consulta parametrizada y evaluador |
 | F-001 | Aplicación web, autenticación y autorización por rol | Completa | Recorridos de login/logout, acceso anónimo, roles y credenciales inválidas revisados manualmente por el usuario el 2026-10-05 |
 | F-002 | CRUD administrativo de usuarios | Completa | Listado seguro, creación, validaciones, edición, confirmación y eliminación revisados manualmente por el usuario el 2026-10-05 |
-| F-003 | CRUD administrativo de películas y videojuegos | En curso | Implementación inicial lista para revisión manual; reutiliza las tablas existentes y no añade migraciones |
+| F-003 | CRUD administrativo de películas y videojuegos | Completa | Integración con PostgreSQL verificada con registros temporales; conteos existentes conservados |
 | F-004 | Chat web e historial privado | Pendiente | Integra el grafo existente con persistencia de mensajes |
 | F-005 | Registro y gráfica de consumo | Pendiente | Guarda conteo por pregunta y separa categorías |
 | M3 | Preparación de entrega | Pendiente | Configuración reproducible, revisión integral y demostración de 2–3 minutos |

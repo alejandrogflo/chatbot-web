@@ -1,6 +1,6 @@
 # Tareas — F-003 Administración de películas y videojuegos
 
-**Estado:** Implementación inicial lista; revisión manual pendiente
+**Estado:** Completa; integración con PostgreSQL verificada el 2026-10-05
 
 **Especificación:** [spec.md](spec.md)
 
@@ -13,5 +13,6 @@
 - [x] Validar campos opcionales, longitudes y valores numéricos según el esquema.
 - [x] Crear listas y formularios compartidos en español, con mensajes y confirmación de eliminación.
 - [x] Activar las secciones de películas y videojuegos desde el panel administrativo.
-- [ ] Revisar los criterios de aceptación manualmente sin modificar registros originales.
-- [ ] Actualizar arquitectura, roadmap y README al cerrar F-003.
+- [x] Verificar permisos, validaciones, CSRF y CRUD en ambas tablas con registros temporales; limpiar los registros temporales.
+- [x] Confirmar que los conteos iniciales se conservaron y documentar la diferencia preexistente del conteo de videojuegos.
+- [x] Actualizar arquitectura, roadmap y README al cerrar F-003.
