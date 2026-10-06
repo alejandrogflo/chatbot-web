@@ -1,44 +1,40 @@
 {% extends "base.html" %}
 {% block title %}{% if mode == 'crear' %}Crear usuario{% else %}Editar usuario{% endif %} · Administración{% endblock %}
 {% block content %}
-<header class="topbar">
-  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Usuarios</span></a>
-  <a class="button button--quiet" href="{{ url_for('admin_users.index') }}">Volver al listado</a>
-</header>
-
-<section class="form-page">
+<section class="form-page" aria-labelledby="user-form-title">
+  <a class="back-link" href="{{ url_for('admin_users.index') }}">← Volver a usuarios</a>
   <p class="eyebrow">ADMINISTRACIÓN · CUENTAS</p>
-  <h1>{% if mode == 'crear' %}Crear usuario{% else %}Editar usuario{% endif %}</h1>
+  <h1 id="user-form-title">{% if mode == 'crear' %}Crear usuario{% else %}Editar usuario{% endif %}</h1>
   <p class="muted">{% if mode == 'crear' %}Completa los datos para dar acceso al sistema.{% else %}Actualiza los datos de la cuenta. La contraseña es opcional.{% endif %}</p>
 
   {% if errors %}
-    <div class="form-errors" role="alert">
+    <div class="form-errors" role="alert" tabindex="-1">
       <strong>Revisa estos campos:</strong>
-      <ul>{% for error in errors.values() %}<li>{{ error }}</li>{% endfor %}</ul>
+      <ul>{% for field_name, error in errors.items() %}<li><a href="#{{ field_name }}">{{ error }}</a></li>{% endfor %}</ul>
     </div>
   {% endif %}
 
   <form class="form-panel account-form" method="post" action="{% if mode == 'crear' %}{{ url_for('admin_users.create') }}{% else %}{{ url_for('admin_users.edit', user_id=user_id) }}{% endif %}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label for="nombre">Nombre</label>
-    <input id="nombre" name="nombre" type="text" maxlength="120" autocomplete="name" value="{{ values.nombre }}" required aria-invalid="{{ 'true' if errors.get('nombre') else 'false' }}">
-    {% if errors.get('nombre') %}<span class="field-error">{{ errors.nombre }}</span>{% endif %}
+    <input id="nombre" name="nombre" type="text" maxlength="120" autocomplete="name" value="{{ values.nombre }}" required aria-invalid="{{ 'true' if errors.get('nombre') else 'false' }}"{% if errors.get('nombre') %} aria-describedby="error-nombre"{% endif %}>
+    {% if errors.get('nombre') %}<span id="error-nombre" class="field-error">{{ errors.nombre }}</span>{% endif %}
 
     <label for="correo">Correo electrónico</label>
-    <input id="correo" name="correo" type="email" maxlength="254" autocomplete="email" value="{{ values.correo }}" required aria-invalid="{{ 'true' if errors.get('correo') else 'false' }}">
-    {% if errors.get('correo') %}<span class="field-error">{{ errors.correo }}</span>{% endif %}
+    <input id="correo" name="correo" type="email" maxlength="254" autocomplete="email" value="{{ values.correo }}" required aria-invalid="{{ 'true' if errors.get('correo') else 'false' }}"{% if errors.get('correo') %} aria-describedby="error-correo"{% endif %}>
+    {% if errors.get('correo') %}<span id="error-correo" class="field-error">{{ errors.correo }}</span>{% endif %}
 
     <label for="rol">Rol</label>
-    <select id="rol" name="rol" required aria-invalid="{{ 'true' if errors.get('rol') else 'false' }}">
+    <select id="rol" name="rol" required aria-invalid="{{ 'true' if errors.get('rol') else 'false' }}"{% if errors.get('rol') %} aria-describedby="error-rol"{% endif %}>
       <option value="usuario" {% if values.rol == 'usuario' %}selected{% endif %}>Usuario</option>
       <option value="admin" {% if values.rol == 'admin' %}selected{% endif %}>Administrador</option>
     </select>
-    {% if errors.get('rol') %}<span class="field-error">{{ errors.rol }}</span>{% endif %}
+    {% if errors.get('rol') %}<span id="error-rol" class="field-error">{{ errors.rol }}</span>{% endif %}
 
     <label for="password">{% if mode == 'crear' %}Contraseña{% else %}Nueva contraseña{% endif %}</label>
-    <input id="password" name="password" type="password" autocomplete="new-password" {% if mode == 'crear' %}required{% endif %} aria-invalid="{{ 'true' if errors.get('password') else 'false' }}" aria-describedby="password-help">
+    <input id="password" name="password" type="password" autocomplete="new-password" {% if mode == 'crear' %}required{% endif %} aria-invalid="{{ 'true' if errors.get('password') else 'false' }}"{% if errors.get('password') %} aria-describedby="password-help error-password"{% else %} aria-describedby="password-help"{% endif %}>
     <span id="password-help" class="field-help">{% if mode == 'crear' %}Mínimo 10 caracteres.{% else %}Deja este campo vacío para conservar la contraseña actual; si la cambias, usa al menos 10 caracteres.{% endif %}</span>
-    {% if errors.get('password') %}<span class="field-error">{{ errors.password }}</span>{% endif %}
+    {% if errors.get('password') %}<span id="error-password" class="field-error">{{ errors.password }}</span>{% endif %}
 
     <div class="form-actions">
       <a class="button button--quiet" href="{{ url_for('admin_users.index') }}">Cancelar</a>

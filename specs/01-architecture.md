@@ -1,7 +1,7 @@
 # Arquitectura y decisiones técnicas
 
-**Estado:** Base técnica acordada; F-001 a F-005 implementados
-**Actualizado:** 2026-10-05
+**Estado:** Base técnica acordada; F-001 a F-006 implementados
+**Actualizado:** 2026-10-06
 
 ## Tecnologías
 
@@ -31,6 +31,8 @@ DBeaver es una herramienta de inspección y administración manual. La aplicaci�
 - CRUD web de películas y videojuegos sobre las tablas existentes, con repositorio allowlist, valores parametrizados y rutas administrativas protegidas; integración revisada el 2026-10-05.
 - Chat web que invoca `run_chat` por pregunta, guarda cada intercambio en una transacción y ofrece historial privado por usuario; el usuario validó manualmente F-004 el 2026-10-05.
 - Consumo académico y del proveedor guardado junto a cada intercambio, agregado exclusivamente por usuario autenticado y mostrado en la página privada `/consumo`.
+- Refinamiento visual F-006 en las páginas Flask: navegación autenticada compartida, jerarquía común, vista de inicio centrada en el chat, formularios y tablas adaptables, foco visible y resumen gráfico con etiquetas textuales.
+- UI/UX Pro Max instalado como recurso de desarrollo en `.agents/skills/ui-ux-pro-max/`; su código y datos no son dependencias de ejecución. El sistema visual específico vive en `design-system/seminario-chatbot/MASTER.md`.
 
 ### Pendiente
 
@@ -130,3 +132,11 @@ Las migraciones `001` y `002` ya se aplicaron localmente; los cambios futuros re
 - La migración `002` solo relaja la nulabilidad de `consumo_tokens.categoria`; conserva la restricción de valores permitidos para las categorías conocidas y no altera catálogos.
 - La gráfica muestra el total académico agregado por películas, videojuegos y consultas sin categoría; los datos y totales se consultan por el usuario autenticado en el servidor.
 - La migración `002` se aplicó a la base local `postgres` el 2026-10-05.
+
+## Decisiones para F-006
+
+- UI/UX Pro Max se instala dentro del repositorio para que la guía y la búsqueda local estén disponibles durante futuras tareas de interfaz. Se conserva su licencia y sus recursos; no se agrega como dependencia de Flask ni al navegador.
+- La interfaz conserva Flask, Jinja y CSS sencillo, la paleta verde existente y los flujos actuales. Se centraliza la navegación autenticada en un partial Jinja y se declaran tokens visuales en el CSS.
+- Las vistas de tablas se transforman en tarjetas con etiquetas en móvil. Las barras de consumo conservan sus valores y etiquetas textuales, además de diferenciar las categorías visualmente.
+- El diseño del proyecto se documenta en `design-system/seminario-chatbot/MASTER.md`. Se eligieron solo recomendaciones aplicables de la skill; su generación completa propuso patrones de landing y una paleta que no correspondían a esta aplicación.
+- La revisión visual manual cubrió inicio, chat, historial, consumo y administración en tamaños de escritorio y móvil. No se añadieron ni ejecutaron pruebas automatizadas.

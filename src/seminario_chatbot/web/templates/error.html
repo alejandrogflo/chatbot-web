@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %}{{ status }} · Seminario Chatbot{% endblock %}
 {% block content %}
-<section class="error-card">
+<section class="error-card" aria-labelledby="error-title">
   <p class="eyebrow">SEMINARIO CHATBOT · {{ status }}</p>
-  <h1>{% if status == 403 %}Acceso restringido{% elif status == 404 %}No encontrada{% elif status == 503 %}Servicio no disponible{% else %}Solicitud no válida{% endif %}</h1>
+  <h1 id="error-title">{% if status == 403 %}Acceso restringido{% elif status == 404 %}No encontramos esa página{% elif status == 503 %}Servicio no disponible{% else %}Solicitud no válida{% endif %}</h1>
   <p class="muted">{{ message }}</p>
-  <a class="button button--primary" href="{{ url_for('main.dashboard') }}">Volver</a>
+  <a class="button button--primary" href="{{ url_for('main.dashboard') }}">Volver al inicio <span aria-hidden="true">↗</span></a>
 </section>
 {% endblock %}

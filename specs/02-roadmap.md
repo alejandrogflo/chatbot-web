@@ -12,6 +12,7 @@ El orden prioriza dependencias y entrega incrementos visibles. Los estados refle
 | F-003 | CRUD administrativo de películas y videojuegos | Completa | Integración con PostgreSQL verificada con registros temporales; conteos existentes conservados |
 | F-004 | Chat web e historial privado | Completa | Chat e historial validados manualmente por el usuario el 2026-10-05 |
 | F-005 | Registro y gráfica de consumo | Completa | Cada intercambio guarda el consumo y `/consumo` presenta agregados privados por categoría |
+| F-006 | Refinamiento visual y accesibilidad | Completa | UI/UX Pro Max instalada como guía de desarrollo; interfaz revisada en móvil y escritorio |
 | M3 | Preparación de entrega | Pendiente | Configuración reproducible, revisión integral y demostración de 2–3 minutos |
 
 ## Dependencias

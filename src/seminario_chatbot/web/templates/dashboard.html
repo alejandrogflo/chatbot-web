@@ -1,45 +1,51 @@
 {% extends "base.html" %}
 {% block title %}Inicio · Seminario Chatbot{% endblock %}
 {% block content %}
-<header class="topbar">
-  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Catálogo</span></a>
-  <div class="topbar-actions">
-    <nav class="app-nav" aria-label="Navegación principal">
-      <a href="{{ url_for('main.chat') }}">Chat</a>
-      <a href="{{ url_for('main.history') }}">Historial</a>
-      <a href="{{ url_for('main.consumption') }}">Consumo</a>
-      {% if user.rol == 'admin' %}<a href="{{ url_for('main.admin_panel') }}">Administración</a>{% endif %}
-    </nav>
-    <span class="user-chip"><span class="avatar">{{ user.nombre[:1]|upper }}</span>{{ user.nombre }} <span class="role-label">{{ user.rol }}</span></span>
-    <form method="post" action="{{ url_for('auth.logout') }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button class="button button--quiet" type="submit">Cerrar sesión</button>
-    </form>
+<section class="dashboard-hero" aria-labelledby="welcome-title">
+  <div class="dashboard-intro">
+    <p class="eyebrow">TU ESPACIO PERSONAL</p>
+    <h1 id="welcome-title">Hola, {{ user.nombre.split(' ')[0] }}.</h1>
+    <p class="intro-copy">Encuentra tu próxima película o videojuego explorando el catálogo con preguntas sencillas.</p>
   </div>
-</header>
-<section class="welcome-block">
-  <p class="eyebrow">TU ESPACIO</p>
-  <h1>Hola, {{ user.nombre.split(' ')[0] }}.</h1>
-  <p class="muted">Consulta el catálogo de películas y videojuegos, y vuelve a tus respuestas cuando quieras.</p>
+  <aside class="hero-action" aria-labelledby="hero-action-title">
+    <p class="hero-action-kicker">ASISTENTE DE CATÁLOGO</p>
+    <h2 id="hero-action-title">¿Qué tienes ganas de ver?</h2>
+    <p>Describe el género, la plataforma o el tipo de historia que buscas.</p>
+    <a class="button button--light" href="{{ url_for('main.chat') }}">Empezar una consulta <span aria-hidden="true">↗</span></a>
+    <span class="hero-action-footnote">Películas <span aria-hidden="true">·</span> Videojuegos</span>
+  </aside>
 </section>
+
+<section class="dashboard-section" aria-labelledby="shortcuts-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">SIGUE DESDE DONDE ESTABAS</p>
+      <h2 id="shortcuts-title">Tu actividad</h2>
+    </div>
+  </div>
+  <div class="shortcut-grid">
+    <a class="shortcut-card" href="{{ url_for('main.history') }}">
+      <span class="shortcut-index">01 <span aria-hidden="true">/</span> CONSULTAS</span>
+      <h3>Tu historial</h3>
+      <p>Revisa las preguntas y respuestas guardadas en tu cuenta.</p>
+      <span class="shortcut-link">Ver historial <span aria-hidden="true">↗</span></span>
+    </a>
+    <a class="shortcut-card" href="{{ url_for('main.consumption') }}">
+      <span class="shortcut-index">02 <span aria-hidden="true">/</span> RESUMEN</span>
+      <h3>Consumo aproximado</h3>
+      <p>Consulta el conteo académico y compáralo por categoría.</p>
+      <span class="shortcut-link">Ver consumo <span aria-hidden="true">↗</span></span>
+    </a>
+  </div>
+</section>
+
 {% if user.rol == 'admin' %}
-  <a class="admin-link" href="{{ url_for('main.admin_panel') }}">Abrir panel de administración <span aria-hidden="true">↗</span></a>
+  <section class="admin-callout" aria-label="Acceso administrativo">
+    <div>
+      <p class="eyebrow">HERRAMIENTAS DE ADMINISTRACIÓN</p>
+      <p>Mantén las cuentas y los catálogos del sistema.</p>
+    </div>
+    <a class="button button--quiet" href="{{ url_for('main.admin_panel') }}">Abrir administración <span aria-hidden="true">↗</span></a>
+  </section>
 {% endif %}
-<section class="feature-grid" aria-label="Funciones del proyecto">
-  <a class="feature-card feature-card--active feature-card--link" href="{{ url_for('main.chat') }}">
-    <span class="card-number">01</span><span class="card-icon">✳</span>
-    <h2>Chat de catálogo</h2><p>Pregunta por películas y videojuegos usando lenguaje natural.</p>
-    <span class="status-pill">Abrir chat <span aria-hidden="true">↗</span></span>
-  </a>
-  <a class="feature-card feature-card--link" href="{{ url_for('main.history') }}">
-    <span class="card-number">02</span><span class="card-icon">↗</span>
-    <h2>Tu historial</h2><p>Consulta tus preguntas y respuestas anteriores de forma privada.</p>
-    <span class="status-pill">Ver historial <span aria-hidden="true">↗</span></span>
-  </a>
-  <a class="feature-card feature-card--active feature-card--link" href="{{ url_for('main.consumption') }}">
-    <span class="card-number">03</span><span class="card-icon">▥</span>
-    <h2>Consumo aproximado</h2><p>Explora el conteo académico separado por categoría.</p>
-    <span class="status-pill">Ver resumen <span aria-hidden="true">↗</span></span>
-  </a>
-</section>
 {% endblock %}

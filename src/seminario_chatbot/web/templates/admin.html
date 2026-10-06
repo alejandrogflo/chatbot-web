@@ -1,21 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Administración · Seminario Chatbot{% endblock %}
 {% block content %}
-<header class="topbar">
-  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Administración</span></a>
-  <div class="topbar-actions">
-    <a class="button button--quiet" href="{{ url_for('main.dashboard') }}">Volver al inicio</a>
-    <form method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="button button--quiet" type="submit">Cerrar sesión</button></form>
-  </div>
-</header>
-<section class="welcome-block">
-  <p class="eyebrow">ADMINISTRACIÓN</p>
-  <h1>Panel de control</h1>
-  <p class="muted">Hola, {{ user.nombre }}. Desde aquí puedes mantener las cuentas y los catálogos del sistema.</p>
+<section class="page-heading" aria-labelledby="admin-title">
+  <p class="eyebrow">ESPACIO ADMINISTRATIVO</p>
+  <h1 id="admin-title">Mantén todo en orden.</h1>
+  <p class="muted">Hola, {{ user.nombre }}. Administra las cuentas y los catálogos existentes.</p>
 </section>
-<section class="feature-grid">
-  <a class="feature-card feature-card--link" href="{{ url_for('admin_users.index') }}"><span class="card-number">01</span><span class="card-icon">◎</span><h2>Usuarios</h2><p>Alta, consulta, actualización y baja de cuentas.</p><span class="status-pill">Gestionar usuarios ↗</span></a>
-  <a class="feature-card feature-card--link" href="{{ url_for('admin_catalogs.index', catalog_key='peliculas') }}"><span class="card-number">02</span><span class="card-icon">▤</span><h2>Películas</h2><p>Alta, consulta, actualización y baja de películas.</p><span class="status-pill">Gestionar películas ↗</span></a>
-  <a class="feature-card feature-card--link" href="{{ url_for('admin_catalogs.index', catalog_key='videojuegos') }}"><span class="card-number">03</span><span class="card-icon">▣</span><h2>Videojuegos</h2><p>Alta, consulta, actualización y baja de videojuegos.</p><span class="status-pill">Gestionar videojuegos ↗</span></a>
+
+<section class="admin-grid" aria-label="Herramientas de administración">
+  <a class="admin-card" href="{{ url_for('admin_users.index') }}">
+    <span class="card-index">01 <span aria-hidden="true">/</span> CUENTAS</span>
+    <h2>Usuarios</h2>
+    <p>Crea cuentas y mantén sus datos y roles actualizados.</p>
+    <span class="card-action">Gestionar usuarios <span aria-hidden="true">↗</span></span>
+  </a>
+  <a class="admin-card" href="{{ url_for('admin_catalogs.index', catalog_key='peliculas') }}">
+    <span class="card-index">02 <span aria-hidden="true">/</span> CATÁLOGO</span>
+    <h2>Películas</h2>
+    <p>Consulta y mantén las películas disponibles para el asistente.</p>
+    <span class="card-action">Gestionar películas <span aria-hidden="true">↗</span></span>
+  </a>
+  <a class="admin-card" href="{{ url_for('admin_catalogs.index', catalog_key='videojuegos') }}">
+    <span class="card-index">03 <span aria-hidden="true">/</span> CATÁLOGO</span>
+    <h2>Videojuegos</h2>
+    <p>Consulta y mantén los videojuegos disponibles para el asistente.</p>
+    <span class="card-action">Gestionar videojuegos <span aria-hidden="true">↗</span></span>
+  </a>
 </section>
 {% endblock %}

@@ -1,21 +1,10 @@
 {% extends "base.html" %}
 {% block title %}{{ catalog.label }} · Administración{% endblock %}
 {% block content %}
-<header class="topbar">
-  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ {{ catalog.label }}</span></a>
-  <div class="topbar-actions">
-    <span class="user-chip"><span class="avatar">{{ current_user.nombre[:1]|upper }}</span>{{ current_user.nombre }}</span>
-    <form method="post" action="{{ url_for('auth.logout') }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button class="button button--quiet" type="submit">Cerrar sesión</button>
-    </form>
-  </div>
-</header>
-
-<section class="welcome-block welcome-block--compact">
+<section class="page-heading page-heading--compact" aria-labelledby="catalog-title">
   <p class="eyebrow">ADMINISTRACIÓN · CATÁLOGOS</p>
-  <h1>{{ catalog.label }}</h1>
-  <p class="muted">Consulta y mantén los registros de este catálogo.</p>
+  <h1 id="catalog-title">{{ catalog.label }}</h1>
+  <p class="muted">Consulta y mantén los registros disponibles para el asistente.</p>
 </section>
 
 <div class="admin-toolbar">
@@ -30,22 +19,22 @@
 <section class="table-card" aria-label="Registros de {{ catalog.label }}">
   {% if items %}
     <div class="table-wrap">
-      <table class="catalog-table">
+      <table class="catalog-table responsive-table">
         <thead>
           <tr>
-            <th>ID</th>
-            {% for field_name in catalog.list_fields %}<th>{{ field_labels[field_name] }}</th>{% endfor %}
-            <th>Acciones</th>
+            <th scope="col">ID</th>
+            {% for field_name in catalog.list_fields %}<th scope="col">{{ field_labels[field_name] }}</th>{% endfor %}
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {% for item in items %}
             <tr>
-              <td>{{ item[catalog.id_column] }}</td>
+              <td data-label="ID">{{ item[catalog.id_column] }}</td>
               {% for field_name in catalog.list_fields %}
-                <td>{{ item[field_name] if item[field_name] is not none else "—" }}</td>
+                <td data-label="{{ field_labels[field_name] }}">{{ item[field_name] if item[field_name] is not none else "—" }}</td>
               {% endfor %}
-              <td>
+              <td data-label="Acciones">
                 <div class="row-actions">
                   <a class="button button--quiet button--small" href="{{ url_for('admin_catalogs.edit', catalog_key=catalog_key, item_id=item[catalog.id_column]) }}">Editar</a>
                   <form method="post" action="{{ url_for('admin_catalogs.remove', catalog_key=catalog_key, item_id=item[catalog.id_column]) }}" onsubmit="return confirm('¿Eliminar esta {{ catalog.singular }} del catálogo? Esta acción no se puede deshacer.');">
@@ -60,7 +49,7 @@
       </table>
     </div>
   {% else %}
-    <div class="empty-state"><span class="card-icon">◎</span><h2>Aún no hay registros</h2><p>Usa “Crear {{ catalog.singular }}” para agregar el primero.</p></div>
+    <div class="empty-state"><p class="eyebrow">{{ catalog.label|upper }}</p><h2>Aún no hay registros</h2><p>Usa “Crear {{ catalog.singular }}” para agregar el primero.</p></div>
   {% endif %}
 </section>
 {% endblock %}

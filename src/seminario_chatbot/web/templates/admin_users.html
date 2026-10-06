@@ -1,20 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Usuarios · Administración{% endblock %}
 {% block content %}
-<header class="topbar">
-  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Usuarios</span></a>
-  <div class="topbar-actions">
-    <span class="user-chip"><span class="avatar">{{ current_user.nombre[:1]|upper }}</span>{{ current_user.nombre }}</span>
-    <form method="post" action="{{ url_for('auth.logout') }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button class="button button--quiet" type="submit">Cerrar sesión</button>
-    </form>
-  </div>
-</header>
-
-<section class="welcome-block welcome-block--compact">
+<section class="page-heading page-heading--compact" aria-labelledby="users-title">
   <p class="eyebrow">ADMINISTRACIÓN · CUENTAS</p>
-  <h1>Usuarios</h1>
+  <h1 id="users-title">Usuarios</h1>
   <p class="muted">Crea cuentas y mantén sus datos y roles actualizados.</p>
 </section>
 
@@ -30,18 +19,18 @@
 <section class="table-card" aria-label="Cuentas registradas">
   {% if users %}
     <div class="table-wrap">
-      <table class="users-table">
+      <table class="users-table responsive-table">
         <thead>
-          <tr><th>Cuenta</th><th>Correo</th><th>Rol</th><th>Fecha de registro</th><th>Acciones</th></tr>
+          <tr><th scope="col">Cuenta</th><th scope="col">Correo</th><th scope="col">Rol</th><th scope="col">Fecha de registro</th><th scope="col">Acciones</th></tr>
         </thead>
         <tbody>
           {% for user in users %}
             <tr>
-              <td><span class="table-name">{{ user.nombre }}</span><span class="table-id">ID {{ user.id_usuario }}</span></td>
-              <td>{{ user.correo }}</td>
-              <td><span class="role-label">{{ user.rol }}</span></td>
-              <td>{{ user.fecha_registro.strftime('%d/%m/%Y %H:%M') }}</td>
-              <td>
+              <td data-label="Cuenta"><span class="table-name">{{ user.nombre }}</span><span class="table-id">ID {{ user.id_usuario }}</span></td>
+              <td data-label="Correo">{{ user.correo }}</td>
+              <td data-label="Rol"><span class="role-label">{{ user.rol }}</span></td>
+              <td data-label="Fecha de registro"><time datetime="{{ user.fecha_registro.isoformat() }}">{{ user.fecha_registro.strftime('%d/%m/%Y · %H:%M') }}</time></td>
+              <td data-label="Acciones">
                 <div class="row-actions">
                   <a class="button button--quiet button--small" href="{{ url_for('admin_users.edit', user_id=user.id_usuario) }}">Editar</a>
                   <form method="post" action="{{ url_for('admin_users.remove', user_id=user.id_usuario) }}" onsubmit="return confirm('¿Eliminar esta cuenta y todos sus datos asociados? Esta acción no se puede deshacer.');">
@@ -56,7 +45,7 @@
       </table>
     </div>
   {% else %}
-    <div class="empty-state"><span class="card-icon">◎</span><h2>Aún no hay cuentas</h2><p>Usa “Crear usuario” para agregar la primera cuenta.</p></div>
+    <div class="empty-state"><p class="eyebrow">CUENTAS</p><h2>Aún no hay cuentas</h2><p>Usa “Crear usuario” para agregar la primera cuenta.</p></div>
   {% endif %}
 </section>
 {% endblock %}

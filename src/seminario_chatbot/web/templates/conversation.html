@@ -1,42 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Consulta del historial · Seminario Chatbot{% endblock %}
 {% block content %}
-<header class="topbar">
-  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Catálogo</span></a>
-  <div class="topbar-actions">
-    <nav class="app-nav" aria-label="Navegación principal">
-      <a href="{{ url_for('main.chat') }}">Chat</a>
-      <a class="app-nav--current" href="{{ url_for('main.history') }}" aria-current="page">Historial</a>
-      <a href="{{ url_for('main.consumption') }}">Consumo</a>
-      {% if user.rol == 'admin' %}<a href="{{ url_for('main.admin_panel') }}">Administración</a>{% endif %}
-    </nav>
-    <span class="user-chip"><span class="avatar">{{ user.nombre[:1]|upper }}</span>{{ user.nombre }}</span>
-    <form method="post" action="{{ url_for('auth.logout') }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button class="button button--quiet" type="submit">Cerrar sesión</button>
-    </form>
-  </div>
-</header>
-
-<section class="welcome-block welcome-block--compact conversation-heading">
+<section class="conversation-page" aria-labelledby="conversation-title">
   <a class="back-link" href="{{ url_for('main.history') }}">← Volver al historial</a>
-  <p class="eyebrow">CONSULTA GUARDADA</p>
-  <h1>Tu consulta</h1>
-  <p class="muted"><time datetime="{{ conversation.fecha_creacion.isoformat() }}">{{ conversation.fecha_creacion.strftime('%d/%m/%Y · %H:%M') }}</time></p>
-</section>
+  <header class="page-heading conversation-heading">
+    <p class="eyebrow">CONSULTA GUARDADA</p>
+    <h1 id="conversation-title">Tu consulta</h1>
+    <p class="muted"><time datetime="{{ conversation.fecha_creacion.isoformat() }}">{{ conversation.fecha_creacion.strftime('%d/%m/%Y · %H:%M') }}</time></p>
+  </header>
 
-<section class="conversation-thread" aria-label="Pregunta y respuesta">
-  <article class="message message--user">
-    <span class="message-label"><span class="avatar">{{ user.nombre[:1]|upper }}</span> Tú</span>
-    <p>{{ conversation.pregunta }}</p>
-  </article>
-  <article class="message message--assistant" aria-live="polite">
-    <span class="message-label"><span class="brand-mark">S</span> Seminario Chatbot</span>
-    <p>{{ conversation.respuesta }}</p>
-  </article>
+  <div class="conversation-thread" aria-label="Pregunta y respuesta">
+    <article class="message message--user">
+      <span class="message-label"><span class="avatar" aria-hidden="true">{{ user.nombre[:1]|upper }}</span> Tú preguntaste</span>
+      <p>{{ conversation.pregunta }}</p>
+    </article>
+    <article class="message message--assistant">
+      <span class="message-label"><span class="assistant-mark assistant-mark--small" aria-hidden="true">S</span> Asistente de catálogo</span>
+      <p>{{ conversation.respuesta }}</p>
+    </article>
+  </div>
+  <div class="conversation-actions">
+    <a class="button button--primary" href="{{ url_for('main.chat') }}">Hacer otra consulta <span aria-hidden="true">↗</span></a>
+  </div>
 </section>
-
-<div class="conversation-actions">
-  <a class="button button--primary" href="{{ url_for('main.chat') }}">Hacer otra consulta <span aria-hidden="true">↗</span></a>
-</div>
 {% endblock %}

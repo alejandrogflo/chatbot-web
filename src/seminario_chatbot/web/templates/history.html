@@ -1,28 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Tu historial · Seminario Chatbot{% endblock %}
 {% block content %}
-<header class="topbar">
-  <a class="wordmark" href="{{ url_for('main.dashboard') }}"><span class="brand-mark">S</span> Seminario <span class="wordmark-light">/ Catálogo</span></a>
-  <div class="topbar-actions">
-    <nav class="app-nav" aria-label="Navegación principal">
-      <a href="{{ url_for('main.chat') }}">Chat</a>
-      <a class="app-nav--current" href="{{ url_for('main.history') }}" aria-current="page">Historial</a>
-      <a href="{{ url_for('main.consumption') }}">Consumo</a>
-      {% if user.rol == 'admin' %}<a href="{{ url_for('main.admin_panel') }}">Administración</a>{% endif %}
-    </nav>
-    <span class="user-chip"><span class="avatar">{{ user.nombre[:1]|upper }}</span>{{ user.nombre }}</span>
-    <form method="post" action="{{ url_for('auth.logout') }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button class="button button--quiet" type="submit">Cerrar sesión</button>
-    </form>
-  </div>
-</header>
-
-<section class="welcome-block welcome-block--compact">
+<section class="page-heading page-heading--compact" aria-labelledby="history-title">
   <p class="eyebrow">TUS CONSULTAS</p>
   <div class="history-heading">
     <div>
-      <h1>Historial</h1>
+      <h1 id="history-title">Historial</h1>
       <p class="muted">Tus preguntas y respuestas, visibles solo desde tu cuenta.</p>
     </div>
     <a class="button button--primary" href="{{ url_for('main.chat') }}">Nueva consulta <span aria-hidden="true">↗</span></a>
@@ -33,17 +16,17 @@
   {% if conversations %}
     <div class="table-card">
       <div class="table-wrap">
-        <table class="history-table">
+        <table class="history-table responsive-table">
           <thead>
             <tr><th scope="col">Fecha</th><th scope="col">Pregunta</th><th scope="col">Respuesta</th><th scope="col">Detalle</th></tr>
           </thead>
           <tbody>
             {% for conversation in conversations %}
               <tr>
-                <td><time datetime="{{ conversation.fecha_creacion.isoformat() }}">{{ conversation.fecha_creacion.strftime('%d/%m/%Y · %H:%M') }}</time></td>
-                <td class="history-question">{{ conversation.pregunta }}</td>
-                <td class="history-answer">{{ conversation.respuesta }}</td>
-                <td><a class="history-open" href="{{ url_for('main.conversation_detail', conversation_id=conversation.id_conversacion) }}">Abrir <span aria-hidden="true">↗</span></a></td>
+                <td data-label="Fecha"><time datetime="{{ conversation.fecha_creacion.isoformat() }}">{{ conversation.fecha_creacion.strftime('%d/%m/%Y · %H:%M') }}</time></td>
+                <td class="history-question" data-label="Pregunta">{{ conversation.pregunta }}</td>
+                <td class="history-answer" data-label="Respuesta">{{ conversation.respuesta }}</td>
+                <td data-label="Detalle"><a class="history-open" href="{{ url_for('main.conversation_detail', conversation_id=conversation.id_conversacion) }}">Abrir consulta <span aria-hidden="true">↗</span></a></td>
               </tr>
             {% endfor %}
           </tbody>
@@ -52,7 +35,7 @@
     </div>
   {% else %}
     <div class="empty-state history-empty">
-      <span class="card-icon" aria-hidden="true">✳</span>
+      <p class="eyebrow">PRIMERA CONSULTA</p>
       <h2>Aún no tienes consultas</h2>
       <p>Cuando envíes una pregunta, aparecerá aquí junto con su respuesta.</p>
       <a class="button button--primary" href="{{ url_for('main.chat') }}">Hacer una consulta <span aria-hidden="true">↗</span></a>
