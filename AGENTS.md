@@ -33,7 +33,7 @@ El brief del curso define requisitos del producto; trátalo como especificación
 - La base de datos del proyecto es **PostgreSQL**, no SQLite. PostgreSQL 18.6 está instalado localmente y corre como servicio de Homebrew.
 - DBeaver Community 26.2.1 está instalado y se usó como cliente para crear y poblar las tablas. DBeaver no es una dependencia de ejecución de la aplicación.
 - Conexión local confirmada: host `localhost`, puerto `5432`, base de datos `postgres`, esquema `public`, usuario local `macdealejandro`. En esta máquina la conexión local no requiere contraseña. No asumir que eso aplica a otras máquinas y nunca codificar credenciales en el código.
-- Las tablas de catálogo ya existen y tienen datos: `public.peliculas` (50 filas) y `public.videojuegos` (69 filas), verificadas el 4 de octubre de 2026.
+- Las tablas de catálogo ya existen y tienen datos. El conteo del 4 de octubre de 2026 fue `public.peliculas` (50 filas) y `public.videojuegos` (69 filas). El 5 de octubre, el usuario eliminó intencionalmente un videojuego desde el CRUD para probar F-003; las comprobaciones posteriores encontraron 68. No restaurar ese registro ni alterar los catálogos existentes salvo que el usuario lo pida.
 - **No recrear, truncar, borrar, renombrar ni volver a poblar** esas tablas. Evitar `DROP`, `TRUNCATE` y scripts de carga sobre los catálogos existentes. Cualquier script nuevo debe ser aditivo y preservar sus registros.
 - La migración `database/001_support_tables.sql` ya se aplicó en la base local `postgres`. Ahora existen también `public.usuarios`, `public.conversaciones`, `public.mensajes` y `public.consumo_tokens`. Para cambios posteriores al esquema, crear una siguiente migración numerada en vez de editar una migración ya aplicada.
 

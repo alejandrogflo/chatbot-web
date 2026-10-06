@@ -23,4 +23,4 @@
 
 A petición del usuario, se ejecutó una comprobación de integración puntual con Flask test client y PostgreSQL local. Cubrió acceso anónimo y de usuario normal, acceso administrador, formularios, validación, CSRF y CRUD en ambas tablas usando únicamente registros temporales que se eliminaron al terminar. No se añadió una suite permanente de pruebas.
 
-Los conteos al inicio y al final fueron 50 películas y 68 videojuegos. `AGENTS.md` registra 69 videojuegos en una verificación anterior; la diferencia se deja intacta para revisión separada y no se modificaron registros originales durante F-003.
+Los conteos al inicio y al final de la comprobación de integración fueron 50 películas y 68 videojuegos. El usuario aclaró que había eliminado intencionalmente un videojuego desde el CRUD para probar F-003, lo que explica la diferencia con las 69 filas verificadas el 4 de octubre y anotadas en `AGENTS.md`. La comprobación solo creó y limpió filas temporales; el registro eliminado por el usuario se dejó sin restaurar.
