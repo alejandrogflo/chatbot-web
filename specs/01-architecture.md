@@ -105,3 +105,9 @@ La migración `001` ya se aplicó localmente; los cambios futuros requieren una 
 - Las vistas administrativas solo consultan y presentan id, nombre, correo, rol y fecha; nunca leen el hash de contraseña para mostrarse.
 - Al eliminar una cuenta se informa del borrado en cascada de conversaciones, mensajes y consumo. No se puede borrar la propia cuenta ni quitar la última cuenta administradora.
 - El usuario confirmó manualmente el 2026-10-05 el acceso por rol, el listado sin hashes, alta y validaciones, edición con contraseña vacía, confirmación y eliminación de cuentas de prueba.
+
+## Decisiones para F-003
+
+- El CRUD de catálogos reutiliza `public.peliculas` y `public.videojuegos`; no necesita migración ni cambia los campos suministrados por el docente.
+- El repositorio mantiene un mapa fijo de tablas y columnas para ambas categorías. Los identificadores SQL salen solo de ese mapa y los valores del formulario se parametrizan.
+- El identificador y `fecha_registro` son de solo lectura para la interfaz; PostgreSQL los genera. El borrado se limita a una fila por solicitud POST protegida con CSRF y confirmación.
